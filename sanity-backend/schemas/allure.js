@@ -15,6 +15,11 @@ export default {
         title: 'Allure Fabric Price'
       },
       {
+        name: 'besheetStichingCost',
+        type: 'number',
+        title: 'Besheet Stiching Cost'
+      },
+      {
         name: 'stitchingCost',
         type: 'number',
         title: 'Stitching Cost'
@@ -29,5 +34,6 @@ export default {
         type: 'number',
         title: 'Pillow Stitching Cost'
       },
+      
     ]
   }

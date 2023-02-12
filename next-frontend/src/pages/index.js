@@ -1,11 +1,47 @@
-import Head from 'next/head'
-import { Inter } from '@next/font/google'
-import { createClient } from 'next-sanity'
+import Head from "next/head";
+import { createClient } from "next-sanity";
+import { useFormik } from "formik";
+import { useState } from "react";
 
-const inter = Inter({ subsets: ['latin'] })
+export default function Home({ blogs }) {
+  const [data, setData] = useState([]);
+  const initialValues = {
+    discountType: "",
+    packingType: "",
+  };
 
-export default function Home({blogs}) {
-  console.log(blogs)
+  const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: initialValues,
+      onSubmit: (values) => {
+        console.log(values);
+        setData([...data, values]);
+      },
+    });
+
+  console.log(blogs);
+
+  const allure6090 =
+    ((blogs[1].size6090 + blogs[0].pillowMeterCost) *
+      blogs[0].AllureFabricPrice +
+      (blogs[0].besheetStichingCost + blogs[0].pillowStitchingCost) +
+      blogs[3].ld) *
+    1.07;
+
+  const allure90100 =
+    ((blogs[1].size90100 + blogs[0].pillowMeterCost * 2) *
+      blogs[0].AllureFabricPrice +
+      (blogs[0].besheetStichingCost + blogs[0].pillowStitchingCost * 2) +
+      blogs[3].ld) *
+    1.07;
+
+  const allure90108 =
+    ((blogs[1].size90108 + blogs[0].pillowMeterCost * 2) *
+      blogs[0].AllureFabricPrice +
+      (blogs[0].besheetStichingCost + blogs[0].pillowStitchingCost * 2) +
+      blogs[3].ld) *
+    1.07;
+
   return (
     <>
       <Head>
@@ -14,26 +50,86 @@ export default function Home({blogs}) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-     
 
-      <h1 className="text-3xl font-bold underline">
-     connecting..
-    </h1>
+      <h1 className="text-2xl font-bold underline">Price Check</h1>
+      <div className="bg-blue-100 p-5">
+        <div className="bg-red-200 p-3 rounded-lg">
+          A 60 x 90 : {allure6090}
+        </div>
+        <div className="bg-yellow-200 p-3 rounded-lg mt-3">
+          A 90 x 100 : {allure90100}
+        </div>
+        <div className="bg-green-200 p-3 rounded-lg mt-3">
+          A 90 x 108 : {allure90108}
+        </div>
+      </div>
+
+      <div className="mx-auto flex w-full max-w-sm flex-col gap-6 p-5">
+        <div className="flex flex-col items-center">
+          <h1 className="text-3xl font-semibold">Download Rate List</h1>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <div className="form-field">
+              <label className="form-label">Discount type</label>
+              <select
+                className="select"
+                value={values.discountType}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                name="discountType"
+              >
+                <option value="glr">GLR</option>
+                <option value="blr">BLR</option>
+                <option value="slr">SLR</option>
+                <option value="plr">PLR</option>
+                <option value="c2c">C2C</option>
+              </select>
+            </div>
+            <div className="form-field">
+              <label className="form-label">Packing type</label>
+              <div className="form-control">
+                <select className="select"
+                 value={values.packingType}
+                 onChange={handleChange}
+                 onBlur={handleBlur}
+                 name="packingType"
+                
+                >
+                  <option value="stdpacking">Std. Packing</option>
+                  <option value="ld">LD</option>
+                  <option value="taiwan">Taiwan</option>
+                  <option value="taiwanphoto">Taiwan + photo</option>
+                </select>
+              </div>
+            </div>
+            <div className="form-field pt-5">
+              <div className="form-control justify-between">
+                <button
+                  type="submit"
+                  className="btn btn-primary w-full font-bold"
+                >
+                  Download PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
     </>
-  )
+  );
 }
 
 export async function getServerSideProps() {
+  const client = createClient({
+    projectId: "eo3yixtt",
+    dataset: "production",
+    useCdn: true,
+  });
 
-    const client = createClient({
-      projectId: 'eo3yixtt',
-      dataset: 'production',
-      useCdn : true
-    });
-
-    const query = `*[_type == "blog"]`
-    const blogs = await client.fetch(query)
+  const query = `*[]`;
+  const blogs = await client.fetch(query);
 
   // Pass data to the page via props
-  return { props: { blogs } }
+  return { props: { blogs } };
 }
