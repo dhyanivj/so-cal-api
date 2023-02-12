@@ -1,9 +1,11 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
+import { createClient } from 'next-sanity'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home({blogs}) {
+  console.log(blogs)
   return (
     <>
       <Head>
@@ -14,9 +16,24 @@ export default function Home() {
       </Head>
      
 
-      <div className="home">
-        hello
-      </div>
+      <h1 className="text-3xl font-bold underline">
+     connecting..
+    </h1>
     </>
   )
+}
+
+export async function getServerSideProps() {
+
+    const client = createClient({
+      projectId: 'eo3yixtt',
+      dataset: 'production',
+      useCdn : true
+    });
+
+    const query = `*[_type == "blog"]`
+    const blogs = await client.fetch(query)
+
+  // Pass data to the page via props
+  return { props: { blogs } }
 }
