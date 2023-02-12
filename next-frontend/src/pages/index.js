@@ -18,12 +18,13 @@ export default function Home({ blogs }) {
         setData([...data, values]);
       },
     });
+console.log(values.packingType)
 
   console.log(blogs);
 
   const allure6090 =
     ((blogs[1].size6090 + blogs[0].pillowMeterCost) *
-      blogs[0].AllureFabricPrice +
+      (blogs[0].AllureFabricPrice+blogs) +
       (blogs[0].besheetStichingCost + blogs[0].pillowStitchingCost) +
       blogs[3].ld) *
     1.07;
@@ -76,7 +77,7 @@ export default function Home({ blogs }) {
                 className="select"
                 value={values.discountType}
                 onChange={handleChange}
-                onBlur={handleBlur}
+                onBlur={handleBlur}           
                 name="discountType"
               >
                 <option value="glr">GLR</option>
