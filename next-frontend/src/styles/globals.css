@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.output {
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  .output h1 {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 20px;
+  }
+  
+  .output .bg-blue-100 {
+    background-color: #f0f8ff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  
+  .output .bg-red-200 {
+    background-color: #ffcccc;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  

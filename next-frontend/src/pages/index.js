@@ -1,26 +1,64 @@
 import Head from "next/head";
 import { createClient } from "next-sanity";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import jsPDF from "jspdf";
 
 export default function Home({ priceData }) {
- 
-  const[discountType, setDiscountType] = useState()
-  const[packingType, setPackingType] = useState()
+  const [discountType, setDiscountType] = useState();
+  const outputRef = useRef(null);
+
+  // packing checkbox 
+  const [stdPacking, setStdPacking] = useState(false);
+  const [ldPacking, setLdPacking] = useState(true);
+  const [taiwanPacking, setTaiwanPacking] = useState(false);
+  const [taiwanPhotoPacking, setTaiwanPhotoPacking] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault(),
-    console.log(discountType, packingType)
-  }
+    e.preventDefault();
 
-console.log(priceData)
-  const allure6090 =
-    ((priceData[2].size6090 + priceData[1].pillowMeterCost) *
-      (priceData[1].AllureFabricPrice + priceData[3].transportcost) +
-      (priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
-      priceData[6].ld) * priceData[3].overhead;
+    // Create a new jsPDF instance with A4 size and unit in pt
+    const pdf = new jsPDF("p", "pt", "a4");
+
+    // Get the output div as a DOM element
+    const output = outputRef.current;
+
+    // Add the output div to the PDF document with auto-scaling
+    pdf.html(output, {
+      callback: () => {
+        // Get the table wrapper div as a DOM element
+        const tableWrapper = document.querySelector(".table-wrapper");
+
+        // Add the table wrapper div to the PDF document with auto-scaling
+        pdf.html(tableWrapper, {
+          x: 0,
+          y: 0,
+          callback: () => {
+            pdf.save("output.pdf");
+          },
+        });
+      },
+    });
+  };
+
+  console.log(priceData);
+
+  // glr / blr 
+ 
+  const c2cRate =
+   Math.round(((priceData[2].size6090 + priceData[1].pillowMeterCost) *
+   (priceData[1].AllureFabricPrice + priceData[4].transportcost) +
+   (priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
+   priceData[7].ld) *
+ priceData[4].overhead) ;
+
+ const glrRate = c2cRate / priceData[3].glr;
+ const blrRate = c2cRate / priceData[3].blr;
+ const slrRate = c2cRate / priceData[3].slr;
+ const plrRate = c2cRate / priceData[3].plr;
 
 
-  return (
+
+ return (
     <>
       <Head>
         <title>Create Next App</title>
@@ -29,12 +67,75 @@ console.log(priceData)
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className="text-2xl font-bold underline">Price Check</h1>
-      <div className="bg-blue-100 p-5">
-        <div className="bg-red-200 p-3 rounded-lg">
-          A 60 x 90 : {allure6090}
+      <div className="output w-100" ref={outputRef}>
+        <h1 className="text-2xl font-bold underline">Output</h1>
+        <div className="bg-blue-100 p-5">
+          <div className="bg-red-200 p-3 rounded-lg">
+            A 60 x 90 : {c2cRate}
+
+            <br/>
+            GLR = {glrRate}
+
+          </div>
         </div>
       </div>
+
+      {/* table */}
+     <div className="table-wrapper ">
+     <table border="1" className="table card ">
+        <tbody>
+          <tr>
+            <td>Allure</td>
+            <td>90 x 100</td>
+            {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
+             {ldPacking ? <td> <p>ld checked</p></td> : "" }
+             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
+             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+          </tr>
+          <tr>
+            <td>Allure</td>
+            <td>60 x 90</td>
+            {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
+             {ldPacking ? <td> <p>ld checked</p></td> : "" }
+             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
+             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+          </tr>
+          <tr>
+            <td>Allure</td>
+            <td>90 x 108</td>
+            {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
+             {ldPacking ? <td> <p>ld checked</p></td> : "" }
+             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
+             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+          </tr>
+          <tr>
+            <td>Satiny</td>
+            <td>90 x 100</td>
+             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
+             {ldPacking ? <td> <p>ld checked</p></td> : "" }
+             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
+             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+          </tr>
+          <tr>
+            <td>Satiny</td>
+            <td>60 x 90</td>
+            {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
+            {ldPacking ? <td> <p>ld checked</p></td> : "" }
+            {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
+            {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+          </tr>
+          <tr>
+            <td>Satiny</td>
+            <td>90 x 108</td>
+            {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
+            {ldPacking ? <td> <p>ld checked</p></td> : "" }
+            {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
+            {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+          </tr>
+        </tbody>
+      </table>
+     </div>
+      {/* table ends */}
 
       <div className="mx-auto flex w-full max-w-sm flex-col gap-6 p-5">
         <div className="flex flex-col items-center">
@@ -50,29 +151,66 @@ console.log(priceData)
                 value={discountType}
                 onChange={(e) => setDiscountType(e.target.value)}
               >
-                <option value="glr">GLR</option>
-                <option value="blr">BLR</option>
-                <option value="slr">SLR</option>
-                <option value="plr">PLR</option>
-                <option value="c2c">C2C</option>
+                <option value="priceData[3].glr">GLR</option>
+                <option value="priceData[3].blr">BLR</option>
+                <option value="priceData[3].slr">SLR</option>
+                <option value="priceData[3].plr">PLR</option>
+          
               </select>
             </div>
-            <div className="form-field">
-              <label className="form-label">Packing type</label>
-              <div className="form-control">
-                <select
-                  className="select"
-                value={packingType}
-                  name="packingType"
-                onChange={(e) => setPackingType(e.target.value)}
-                >
-                  <option value="stdpacking">Std. Packing</option>
-                  <option value="ld">LD</option>
-                  <option value="taiwan">Taiwan</option>
-                  <option value="taiwanphoto">Taiwan + photo</option>
-                </select>
+            <div className="mb-4 mt-3">
+                <label htmlFor="packing" className="form-label mb-2" >
+                  Packing Type
+                </label>
+                <div role="group" aria-labelledby="checkbox-group">
+                  <label className="flex cursor-pointer gap-2">
+                    <input
+                      type="checkbox"
+                      name="packing"
+                      checked={stdPacking}
+                      onChange = { (e) => 
+                        setStdPacking(e.target.checked)}
+                      className="checkbox"
+                    />
+                    <span>Std. Packing</span>
+                  </label>
+                  <label className="flex cursor-pointer gap-2">
+                    <input
+                      type="checkbox"
+                      name="packing"
+                      checked={ldPacking}
+                      onChange = { (e) => 
+                        setLdPacking(e.target.checked)}
+                      className="checkbox"
+                    />
+                    <span>LD</span>
+                  </label>
+                  <label className="flex cursor-pointer gap-2">
+                    <input
+                      type="checkbox"
+                      name="packing"
+                      checked={taiwanPacking}
+                      onChange = { (e) => 
+                        setTaiwanPacking(e.target.checked)}
+                      className="checkbox"
+                    />
+                    <span>Taiwan</span>
+                  </label>
+                  <label className="flex cursor-pointer gap-2">
+                    <input
+                      type="checkbox"
+                      name="packing"
+                      checked={taiwanPhotoPacking}
+                      onChange = { (e) => 
+                        setTaiwanPhotoPacking(e.target.checked)}
+                    
+                      className="checkbox"
+                    />
+                    <span>Taiwan + Photo</span>
+                  </label>
+                </div>
               </div>
-            </div>
+
             <div className="form-field pt-5">
               <div className="form-control justify-between">
                 <button
