@@ -1,47 +1,24 @@
 import Head from "next/head";
 import { createClient } from "next-sanity";
-import { useFormik } from "formik";
 import { useState } from "react";
 
-export default function Home({ blogs }) {
-  const [data, setData] = useState([]);
-  const initialValues = {
-    discountType: "",
-    packingType: "",
-  };
+export default function Home({ priceData }) {
+ 
+  const[discountType, setDiscountType] = useState()
+  const[packingType, setPackingType] = useState()
 
-  const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues: initialValues,
-      onSubmit: (values) => {
-        console.log(values);
-        setData([...data, values]);
-      },
-    });
-console.log(values.packingType)
+  const handleSubmit = (e) => {
+    e.preventDefault(),
+    console.log(discountType, packingType)
+  }
 
-  console.log(blogs);
-
+console.log(priceData)
   const allure6090 =
-    ((blogs[1].size6090 + blogs[0].pillowMeterCost) *
-      (blogs[0].AllureFabricPrice+blogs) +
-      (blogs[0].besheetStichingCost + blogs[0].pillowStitchingCost) +
-      blogs[3].ld) *
-    1.07;
+    ((priceData[2].size6090 + priceData[1].pillowMeterCost) *
+      (priceData[1].AllureFabricPrice + priceData[3].transportcost) +
+      (priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
+      priceData[6].ld) * priceData[3].overhead;
 
-  const allure90100 =
-    ((blogs[1].size90100 + blogs[0].pillowMeterCost * 2) *
-      blogs[0].AllureFabricPrice +
-      (blogs[0].besheetStichingCost + blogs[0].pillowStitchingCost * 2) +
-      blogs[3].ld) *
-    1.07;
-
-  const allure90108 =
-    ((blogs[1].size90108 + blogs[0].pillowMeterCost * 2) *
-      blogs[0].AllureFabricPrice +
-      (blogs[0].besheetStichingCost + blogs[0].pillowStitchingCost * 2) +
-      blogs[3].ld) *
-    1.07;
 
   return (
     <>
@@ -57,17 +34,11 @@ console.log(values.packingType)
         <div className="bg-red-200 p-3 rounded-lg">
           A 60 x 90 : {allure6090}
         </div>
-        <div className="bg-yellow-200 p-3 rounded-lg mt-3">
-          A 90 x 100 : {allure90100}
-        </div>
-        <div className="bg-green-200 p-3 rounded-lg mt-3">
-          A 90 x 108 : {allure90108}
-        </div>
       </div>
 
       <div className="mx-auto flex w-full max-w-sm flex-col gap-6 p-5">
         <div className="flex flex-col items-center">
-          <h1 className="text-3xl font-semibold">Download Rate List</h1>
+          {/* <h1 className="text-3xl font-semibold">Download Rate List</h1> */}
         </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -75,10 +46,9 @@ console.log(values.packingType)
               <label className="form-label">Discount type</label>
               <select
                 className="select"
-                value={values.discountType}
-                onChange={handleChange}
-                onBlur={handleBlur}           
                 name="discountType"
+                value={discountType}
+                onChange={(e) => setDiscountType(e.target.value)}
               >
                 <option value="glr">GLR</option>
                 <option value="blr">BLR</option>
@@ -90,12 +60,11 @@ console.log(values.packingType)
             <div className="form-field">
               <label className="form-label">Packing type</label>
               <div className="form-control">
-                <select className="select"
-                 value={values.packingType}
-                 onChange={handleChange}
-                 onBlur={handleBlur}
-                 name="packingType"
-                
+                <select
+                  className="select"
+                value={packingType}
+                  name="packingType"
+                onChange={(e) => setPackingType(e.target.value)}
                 >
                   <option value="stdpacking">Std. Packing</option>
                   <option value="ld">LD</option>
@@ -129,8 +98,8 @@ export async function getServerSideProps() {
   });
 
   const query = `*[]`;
-  const blogs = await client.fetch(query);
+  const priceData = await client.fetch(query);
 
   // Pass data to the page via props
-  return { props: { blogs } };
+  return { props: { priceData } };
 }

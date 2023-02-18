@@ -1,13 +1,18 @@
 
 export default {
-    name: 'transportcost',
+    name: 'commoncost',
     type: 'document',
-      title: 'Transport Cost',
+      title: 'Common Cost',
     fields: [
       {
         name: 'transportcost',
         type: 'number',
         title: 'Transport Cost Per Mtr'
+      },
+      {
+        name: 'overhead',
+        type: 'number',
+        title: 'Overhead'
       },
     ]
   }

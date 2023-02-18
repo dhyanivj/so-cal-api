@@ -1,12 +1,8 @@
-import allure from "./allure";
-import bedsheetSize from "./bedsheetSize";
-import blog from "./blog";
-import costType from "./costType";
-import packingtype from "./packingtype";
-import tranportCost from "./tranportCost";
+import allure from './allure'
+import bedsheetSize from './bedsheetSize'
+import costType from './costType'
 
-export const schemaTypes = [
-    blog  ,
-    allure,
-    packingtype, costType, bedsheetSize, tranportCost
-]
+import packingtype from './packingtype'
+import commonCost from './commonCost'
+
+export const schemaTypes = [allure, packingtype, costType, bedsheetSize, commonCost]
