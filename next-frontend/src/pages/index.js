@@ -43,15 +43,21 @@ export default function Home({ priceData }) {
   console.log(priceData);
 
   // glr / blr 
+
+  
  
   const c2cRate =
    Math.round(((priceData[2].size6090 + priceData[1].pillowMeterCost) *
    (priceData[1].AllureFabricPrice + priceData[4].transportcost) +
    (priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
    priceData[7].ld) *
- priceData[4].overhead) ;
+ priceData[4].overhead)  ;
 
-const updateData =  `priceData[3].blr`
+const numberDiscount = Number(discountType)
+
+console.log(numberDiscount)
+
+const updateData =  `${priceData[3].numberDiscount}`
 
 console.log(updateData)
  const glrRate = updateData;
