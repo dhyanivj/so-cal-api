@@ -1,28 +1,13 @@
 
 export default {
-    name: 'allure',
+    name: 'stitchingCost',
     type: 'document',
-      title: 'Allure/Satiny',
+      title: 'Stitching Cost',
     fields: [
-      {
-        name: 'satinyFabricPrice',
-        type: 'number',
-        title: 'Satiny 90" Fabric Price'
-      },
-      {
-        name: 'AllureFabricPrice',
-        type: 'number',
-        title: 'Allure 90" Fabric Price'
-      },
       {
         name: 'besheetStichingCost',
         type: 'number',
         title: 'Besheet Stiching Cost'
-      },
-      {
-        name: 'stitchingCost',
-        type: 'number',
-        title: 'Stitching Cost'
       },
       {
         name: 'pillowMeterCost',
