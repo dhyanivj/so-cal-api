@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import jsPDF from "jspdf";
 
 export default function Home({ priceData }) {
-  const [discountType, setDiscountType] = useState("blr");
+  const [discountType, setDiscountType] = useState("");
   const outputRef = useRef(null);
 
   // packing checkbox 
@@ -40,7 +40,7 @@ export default function Home({ priceData }) {
     });
   };
 
-  console.log(priceData);
+  // console.log(priceData);
 
   // glr / blr 
 
@@ -53,24 +53,26 @@ export default function Home({ priceData }) {
    priceData[7].ld) *
  priceData[4].overhead)  ;
 
-const numberDiscount = Number(discountType)
 
-console.log(numberDiscount)
+//  const updateData =  `priceData[3].${discountType}`
 
-const updateData =  `${priceData[3].numberDiscount}`
+const updateData =  priceData[3][discountType]
 
 console.log(updateData)
- const glrRate = updateData;
+console.log("data")
+
+
+const glrRate = updateData;
 //  const blrRate = c2cRate / priceData[3].blr;
 //  const slrRate = c2cRate / priceData[3].slr;
 //  const plrRate = c2cRate / priceData[3].plr;
 
 
- const allure90x100Ld = Math.round(((priceData[2].size90100 + priceData[1].pillowMeterCost) *
+ const allure90x100Ld = (Math.round(((priceData[2].size90100 + priceData[1].pillowMeterCost) *
  (priceData[1].AllureFabricPrice + priceData[4].transportcost) +
  (priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
  priceData[7].ld) *
-priceData[4].overhead) ;
+priceData[4].overhead))/priceData[3][discountType] ;
 
  return (
     <>
@@ -118,7 +120,7 @@ priceData[4].overhead) ;
             <td>Allure</td>
             <td>60 x 90</td>
             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-             {ldPacking ? <td> <p>{allure90x100Ld}</p></td> : "" }
+             {ldPacking ? <td> <p>null</p></td> : "" }
              {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
              {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
           </tr>
@@ -126,7 +128,7 @@ priceData[4].overhead) ;
             <td>Allure</td>
             <td>90 x 108</td>
             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-             {ldPacking ? <td> <p>{allure90x100Ld}</p></td> : "" }
+             {ldPacking ? <td> <p>null</p></td> : "" }
              {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
              {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
           </tr>
@@ -134,7 +136,7 @@ priceData[4].overhead) ;
             <td>Satiny</td>
             <td>90 x 100</td>
              {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-             {ldPacking ? <td> <p>{allure90x100Ld}</p></td> : "" }
+             {ldPacking ? <td> <p>null</p></td> : "" }
              {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
              {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
           </tr>
@@ -142,7 +144,7 @@ priceData[4].overhead) ;
             <td>Satiny</td>
             <td>60 x 90</td>
             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-            {ldPacking ? <td> <p>{allure90x100Ld}</p></td> : "" }
+            {ldPacking ? <td> <p>null</p></td> : "" }
             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
           </tr>
@@ -150,7 +152,7 @@ priceData[4].overhead) ;
             <td>Satiny</td>
             <td>90 x 108</td>
             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-            {ldPacking ? <td> <p>{allure90x100Ld}</p></td> : "" }
+            {ldPacking ? <td> <p>null</p></td> : "" }
             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
           </tr>
