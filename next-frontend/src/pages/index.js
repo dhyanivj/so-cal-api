@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import jsPDF from "jspdf";
 
 export default function Home({ priceData }) {
-  const [discountType, setDiscountType] = useState("");
+  const [discountType, setDiscountType] = useState("blr");
   const outputRef = useRef(null);
 
   // packing checkbox 
@@ -33,14 +33,14 @@ export default function Home({ priceData }) {
           x: 0,
           y: 0,
           callback: () => {
-            pdf.save("output.pdf");
+            pdf.save("`sleepingowls-rate-card+${downloadDate}`.pdf");
           },
         });
       },
     });
   };
 
-  // console.log(priceData);
+  console.log(priceData);
 
   // glr / blr 
 
@@ -68,13 +68,145 @@ const glrRate = updateData;
 //  const plrRate = c2cRate / priceData[3].plr;
 
 
- const allure90x100Ld = (Math.round(((priceData[2].size90100 + priceData[1].pillowMeterCost) *
- (priceData[1].AllureFabricPrice + priceData[4].transportcost) +
- (priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
+ const allure90x100Ld = (Math.round(((priceData[2].size90100 +( priceData[1].pillowMeterCost*2)) *
+ (priceData[1].AllureFabricPrice 
+  + priceData[4].transportcost  ) +
+ (priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
  priceData[7].ld) *
-priceData[4].overhead))/priceData[3][discountType] ;
+priceData[4].overhead/priceData[3][discountType] ));
 
- return (
+const allure60x90Ld = (Math.round(((priceData[2].size6090 + priceData[1].pillowMeterCost) *
+(priceData[1].AllureFabricPrice 
+ + priceData[4].transportcost) +
+(priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
+priceData[7].ld) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+const allure90x108Ld = (Math.round(((priceData[2].size90108 + (priceData[1].pillowMeterCost * 2)) *
+(priceData[1].AllureFabricPrice 
+ + priceData[4].transportcost
+ ) +
+(priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+priceData[7].ld) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+ const satiny90x100Ld = (Math.round(((priceData[2].size90100 +( priceData[1].pillowMeterCost*2)) *
+ (priceData[1].satinyFabricPrice 
+  + priceData[4].transportcost  ) +
+ (priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+ priceData[7].ld) *
+priceData[4].overhead/priceData[3][discountType] ));
+
+const satiny60x90Ld = (Math.round(((priceData[2].size6090 + priceData[1].pillowMeterCost) *
+(priceData[1].satinyFabricPrice 
+ + priceData[4].transportcost) +
+(priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
+priceData[7].ld) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+const satiny90x108Ld = (Math.round(((priceData[2].size90108 + (priceData[1].pillowMeterCost * 2)) *
+(priceData[1].satinyFabricPrice 
+ + priceData[4].transportcost
+ ) +
+(priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+priceData[7].ld) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+// for taiwan 
+
+ const allure90x100taiwan = (Math.round(((priceData[2].size90100 +( priceData[1].pillowMeterCost*2)) *
+ (priceData[1].AllureFabricPrice 
+  + priceData[4].transportcost  ) +
+ (priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+ priceData[7].taiwan) *
+priceData[4].overhead/priceData[3][discountType] ));
+
+const allure60x90taiwan = (Math.round(((priceData[2].size6090 + priceData[1].pillowMeterCost) *
+(priceData[1].AllureFabricPrice 
+ + priceData[4].transportcost) +
+(priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
+priceData[7].taiwan) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+const allure90x108taiwan = (Math.round(((priceData[2].size90108 + (priceData[1].pillowMeterCost * 2)) *
+(priceData[1].AllureFabricPrice 
+ + priceData[4].transportcost
+ ) +
+(priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+priceData[7].taiwan) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+ const satiny90x100taiwan = (Math.round(((priceData[2].size90100 +( priceData[1].pillowMeterCost*2)) *
+ (priceData[1].satinyFabricPrice 
+  + priceData[4].transportcost  ) +
+ (priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+ priceData[7].taiwan) *
+priceData[4].overhead/priceData[3][discountType] ));
+
+const satiny60x90taiwan = (Math.round(((priceData[2].size6090 + priceData[1].pillowMeterCost) *
+(priceData[1].satinyFabricPrice 
+ + priceData[4].transportcost) +
+(priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
+priceData[7].taiwan) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+const satiny90x108taiwan = (Math.round(((priceData[2].size90108 + (priceData[1].pillowMeterCost * 2)) *
+(priceData[1].satinyFabricPrice 
+ + priceData[4].transportcost
+ ) +
+(priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+priceData[7].taiwan) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+
+// for taiwanPhoto 
+
+ const allure90x100taiwanPhoto = (Math.round(((priceData[2].size90100 +( priceData[1].pillowMeterCost*2)) *
+ (priceData[1].AllureFabricPrice 
+  + priceData[4].transportcost  ) +
+ (priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+ priceData[7].taiwanPhoto) *
+priceData[4].overhead/priceData[3][discountType] ));
+
+const allure60x90taiwanPhoto = (Math.round(((priceData[2].size6090 + priceData[1].pillowMeterCost) *
+(priceData[1].AllureFabricPrice 
+ + priceData[4].transportcost) +
+(priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
+priceData[7].taiwanPhoto) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+const allure90x108taiwanPhoto = (Math.round(((priceData[2].size90108 + (priceData[1].pillowMeterCost * 2)) *
+(priceData[1].AllureFabricPrice 
+ + priceData[4].transportcost
+ ) +
+(priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+priceData[7].taiwanPhoto) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+ const satiny90x100taiwanPhoto = (Math.round(((priceData[2].size90100 +( priceData[1].pillowMeterCost*2)) *
+ (priceData[1].satinyFabricPrice 
+  + priceData[4].transportcost  ) +
+ (priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+ priceData[7].taiwanPhoto) *
+priceData[4].overhead/priceData[3][discountType] ));
+
+const satiny60x90taiwanPhoto = (Math.round(((priceData[2].size6090 + priceData[1].pillowMeterCost) *
+(priceData[1].satinyFabricPrice 
+ + priceData[4].transportcost) +
+(priceData[1].besheetStichingCost + priceData[1].pillowStitchingCost) +
+priceData[7].taiwanPhoto) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+const satiny90x108taiwanPhoto = (Math.round(((priceData[2].size90108 + (priceData[1].pillowMeterCost * 2)) *
+(priceData[1].satinyFabricPrice 
+ + priceData[4].transportcost
+ ) +
+(priceData[1].besheetStichingCost + (priceData[1].pillowStitchingCost*2)) +
+priceData[7].taiwanPhoto) *
+priceData[4].overhead/priceData[3][discountType])) ;
+
+
+return (
     <>
       <Head>
         <title>Print Rates</title>
@@ -84,17 +216,7 @@ priceData[4].overhead))/priceData[3][discountType] ;
       </Head>
 
       <div className="output w-100" ref={outputRef}>
-        <h1 className="text-2xl font-bold underline">Output</h1>
-        <div className="bg-blue-100 p-5">
-          <div className="bg-red-200 p-3 rounded-lg">
-            A 60 x 90 : {c2cRate}
-            <br/>
-            GLR = {glrRate}
-            <br/>
-          {/* allure 90x100 : {testdata} */}
-          </div>
-        </div>
-      </div>
+       </div>
 
       {/* table */}
      <div className="table-wrapper ">
@@ -112,49 +234,49 @@ priceData[4].overhead))/priceData[3][discountType] ;
             <td>Allure</td>
             <td>90 x 100</td>
             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-             {ldPacking ? <td> <p>{allure90x100Ld}</p></td> : "" }
-             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
-             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+             {ldPacking ? <td> {allure90x100Ld}</td> : "" }
+             {taiwanPacking ? <td> {allure90x100taiwan}</td> : "" }
+             {taiwanPhotoPacking ? <td> {allure90x100taiwanPhoto}</td> : "" }
           </tr>
           <tr>
             <td>Allure</td>
             <td>60 x 90</td>
             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-             {ldPacking ? <td> <p>null</p></td> : "" }
-             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
-             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+             {ldPacking ? <td> <p>{allure60x90Ld}</p></td> : "" }
+             {taiwanPacking ? <td> {allure60x90taiwan}</td> : "" }
+             {taiwanPhotoPacking ? <td> {allure60x90taiwanPhoto}</td> : "" }
           </tr>
           <tr>
             <td>Allure</td>
             <td>90 x 108</td>
             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-             {ldPacking ? <td> <p>null</p></td> : "" }
-             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
-             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+             {ldPacking ? <td> {allure90x108Ld}</td> : "" }
+             {taiwanPacking ? <td>{allure90x108taiwan}</td> : "" }
+             {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto}</td> : "" }
           </tr>
           <tr>
             <td>Satiny</td>
             <td>90 x 100</td>
              {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-             {ldPacking ? <td> <p>null</p></td> : "" }
-             {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
-             {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+             {ldPacking ? <td> <p>{satiny90x100Ld}</p></td> : "" }
+             {taiwanPacking ? <td>{satiny90x100taiwan}</td> : "" }
+             {taiwanPhotoPacking ? <td> {satiny90x100taiwanPhoto}</td> : "" }
           </tr>
           <tr>
             <td>Satiny</td>
             <td>60 x 90</td>
             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-            {ldPacking ? <td> <p>null</p></td> : "" }
-            {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
-            {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+            {ldPacking ? <td> <p>{satiny60x90Ld}</p></td> : "" }
+            {taiwanPacking ? <td> {satiny60x90taiwan}</td> : "" }
+            {taiwanPhotoPacking ? <td>{satiny60x90taiwanPhoto}</td> : "" }
           </tr>
           <tr>
             <td>Satiny</td>
             <td>90 x 108</td>
             {stdPacking ? <td> <p>stdpack checked</p></td> : "" }
-            {ldPacking ? <td> <p>null</p></td> : "" }
-            {taiwanPacking ? <td> <p>taiwan checked</p></td> : "" }
-            {taiwanPhotoPacking ? <td> <p>tai+photo checked</p></td> : "" }
+            {ldPacking ? <td> {satiny90x108Ld}</td> : "" }
+            {taiwanPacking ? <td> {satiny90x108taiwan}</td> : "" }
+            {taiwanPhotoPacking ? <td> {satiny90x108taiwanPhoto}</td> : "" }
           </tr>
         </tbody>
       </table>
@@ -175,6 +297,7 @@ priceData[4].overhead))/priceData[3][discountType] ;
                 value={discountType}
                 onChange={(e) => setDiscountType(e.target.value)}
               >
+                <option value="c2c">C2C</option>
                 <option value="glr">GLR</option>
                 <option value="blr">BLR</option>
                 <option value="slr">SLR</option>

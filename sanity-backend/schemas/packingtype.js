@@ -24,6 +24,11 @@ export default {
         type: 'number',
         title: 'Taiwan'
       },
+      {
+        name: 'taiwanPhoto',
+        type: 'number',
+        title: 'Taiwan+Photo '
+      },
  
     ]
   }

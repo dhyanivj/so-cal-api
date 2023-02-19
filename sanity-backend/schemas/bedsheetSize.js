@@ -18,6 +18,6 @@ export default {
         type: 'number',
         title: '90 X 108'
       },
-     
+      
     ]
   }

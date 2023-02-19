@@ -7,12 +7,12 @@ export default {
       {
         name: 'satinyFabricPrice',
         type: 'number',
-        title: 'Satiny Fabric Price'
+        title: 'Satiny 90" Fabric Price'
       },
       {
         name: 'AllureFabricPrice',
         type: 'number',
-        title: 'Allure Fabric Price'
+        title: 'Allure 90" Fabric Price'
       },
       {
         name: 'besheetStichingCost',
