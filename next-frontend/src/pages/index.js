@@ -22,6 +22,10 @@ export default function Home({
   const [taiwanPhotoPacking, setTaiwanPhotoPacking] = useState();
   const [isDownloading, setIsDownloading] = useState();
 
+  //table discount type
+  const [al_1plus4Dt, setAl_1plus4Dt] = useState();
+  const [hideonprint, setHideonprint] = useState();
+
   useEffect(() => {
     setStdPacking(true);
     setLdPacking(false);
@@ -29,16 +33,17 @@ export default function Home({
     setTaiwanPhotoPacking(false)
     setIsDownloading(false)
   }, []);
-  
-function onDownloadSelected(){
-  return (
-    console.log("Download Selected")
-  )
-}
+
+  function onDownloadSelected() {
+    return (
+      console.log("Download Selected")
+    )
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsDownloading(true);
+    setHideonprint("hidden")
     // Create a new jsPDF instance with A3 size and unit in pt
 
     const pdf = new jsPDF({
@@ -63,7 +68,7 @@ function onDownloadSelected(){
       callback: () => {
         // Get the table wrapper div as a DOM element
         const tableWrapper = document.querySelector(".table-wrapper");
-        
+
         // Add the table wrapper div to the PDF document with auto-scaling
         pdf.html(tableWrapper, {
           x: 0,
@@ -74,81 +79,83 @@ function onDownloadSelected(){
           },
         });
         setIsDownloading(false);
+    setHideonprint("")
+
       },
     });
   };
 
-//whatsapp function
+  //whatsapp function
 
-const generatePDF = () => {
-  return new Promise((resolve, reject) => {
-    // Create a new jsPDF instance with A3 size and unit in pt
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "pt",
-      format: "a3",
+  const generatePDF = () => {
+    return new Promise((resolve, reject) => {
+      // Create a new jsPDF instance with A3 size and unit in pt
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "pt",
+        format: "a3",
+      });
+
+      // Get the output div as a DOM element
+      const output = outputRef.current;
+
+      //date in pdf name
+      const now = new Date();
+      const day = now.getDate().toString().padStart(2, "0");
+      const month = (now.getMonth() + 1).toString().padStart(2, "0");
+      const year = now.getFullYear().toString().slice(-2);
+      const dateString = `${day}-${month}-${year}`;
+      const fileName = `sleepingowls-rate-card-${dateString}.pdf`;
+
+      // Add the output div to the PDF document with auto-scaling
+      pdf.html(output, {
+        callback: () => {
+          // Get the table wrapper div as a DOM element
+          const tableWrapper = document.querySelector(".table-wrapper");
+
+          // Add the table wrapper div to the PDF document with auto-scaling
+          pdf.html(tableWrapper, {
+            x: 0,
+            y: 0,
+            scaleFactor:
+              pdf.internal.pageSize.width / output.offsetWidth, // Scale factor to fit content within page size
+            callback: () => {
+              // Resolve the Promise with the PDF file as a Blob
+              resolve(pdf.output("blob"));
+            },
+          });
+        },
+      });
     });
-
-    // Get the output div as a DOM element
-    const output = outputRef.current;
-
-    //date in pdf name
-    const now = new Date();
-    const day = now.getDate().toString().padStart(2, "0");
-    const month = (now.getMonth() + 1).toString().padStart(2, "0");
-    const year = now.getFullYear().toString().slice(-2);
-    const dateString = `${day}-${month}-${year}`;
-    const fileName = `sleepingowls-rate-card-${dateString}.pdf`;
-
-    // Add the output div to the PDF document with auto-scaling
-    pdf.html(output, {
-      callback: () => {
-        // Get the table wrapper div as a DOM element
-        const tableWrapper = document.querySelector(".table-wrapper");
-
-        // Add the table wrapper div to the PDF document with auto-scaling
-        pdf.html(tableWrapper, {
-          x: 0,
-          y: 0,
-          scaleFactor:
-            pdf.internal.pageSize.width / output.offsetWidth, // Scale factor to fit content within page size
-          callback: () => {
-            // Resolve the Promise with the PDF file as a Blob
-            resolve(pdf.output("blob"));
-          },
-        });
-      },
-    });
-  });
-};
+  };
 
 
-// whatsapp share
-const sharePDFViaWhatsApp = async () => {
-  try {
-    // Generate the PDF file
-    const pdfBlob = await generatePDF();
+  // whatsapp share
+  const sharePDFViaWhatsApp = async () => {
+    try {
+      // Generate the PDF file
+      const pdfBlob = await generatePDF();
 
-    // Create a URL for the PDF file
-    const pdfUrl = URL.createObjectURL(pdfBlob);
+      // Create a URL for the PDF file
+      const pdfUrl = URL.createObjectURL(pdfBlob);
 
-    // Create a WhatsApp message with the PDF file as an attachment
-    const message = `Check out my rate card!`;
-    const file = new File([pdfBlob], "rate-card.pdf", { type: "application/pdf" });
-    const formData = new FormData();
-    formData.append("text", message);
-    formData.append("blob", file);
+      // Create a WhatsApp message with the PDF file as an attachment
+      const message = `Check out my rate card!`;
+      const file = new File([pdfBlob], "rate-card.pdf", { type: "application/pdf" });
+      const formData = new FormData();
+      formData.append("text", message);
+      formData.append("blob", file);
 
-    // Open the WhatsApp share URL with the message and attachment
-    const shareUrl = `https://wa.me/?text=${encodeURIComponent(message)}&attachment=${encodeURIComponent(pdfUrl)}`;
-    window.open(shareUrl, "_blank");
+      // Open the WhatsApp share URL with the message and attachment
+      const shareUrl = `https://wa.me/?text=${encodeURIComponent(message)}&attachment=${encodeURIComponent(pdfUrl)}`;
+      window.open(shareUrl, "_blank");
 
-    // Clean up the URL object
-    URL.revokeObjectURL(pdfUrl);
-  } catch (error) {
-    console.error(error);
-  }
-};
+      // Clean up the URL object
+      URL.revokeObjectURL(pdfUrl);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
   // console.log(standardPack);
@@ -192,7 +199,7 @@ const sharePDFViaWhatsApp = async () => {
       commoncost[0].overhead) /
     costType[0][discountType]
   );
-  
+
   const allure90x100Ld_1plus4 = Math.round(
     (((bedsheetSize[0].size90100 + stitchingCost[0].pillowMeterCost * 4) *
       (fabricPrice[0].AllureFabricPrice + commoncost[0].transportcost) +
@@ -496,11 +503,10 @@ const sharePDFViaWhatsApp = async () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* table ends */}
+
       <div className="w-100 bg-blue-300">
         <div className="mx-auto flex w-full max-w-sm flex-col gap-6 p-5">
           <div className="flex flex-col items-center">
-            {/* <h1 className="text-3xl font-semibold">Download Rate List</h1> */}
           </div>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
@@ -511,8 +517,7 @@ const sharePDFViaWhatsApp = async () => {
                 <select
                   className="select"
                   name="discountType"
-                   value={discountType}
-                
+                  value={discountType}
                   onChange={(e) => setDiscountType(e.target.value)}
                 >
                   <option value="c2c">C2C</option>
@@ -587,23 +592,22 @@ const sharePDFViaWhatsApp = async () => {
                     />
                     {isDownloading ? "Downloading..." : "Download PDF"}
                   </button>
-                
-                 <button
+
+                  <button
                     className="btn btn-success w-full font-bold"
                     onClick={sharePDFViaWhatsApp}
-                 type="button"
-                 >
+                    type="button"
+                  >
                     Whatsapp Share
                   </button>
-                
-                 <button
+
+                  <button
                     className="btn btn-secondary w-full font-bold"
-                 onClick={onDownloadSelected}
-                 type="button"
-                 >
+                    onClick={onDownloadSelected}
+                    type="button"
+                  >
                     Download Selected
                   </button>
-                
                 </div>
               </div>
             </div>
@@ -651,19 +655,20 @@ const sharePDFViaWhatsApp = async () => {
                 )}
               </tr>
               <tr>
-                <td><input type="checkbox" className="checkbox"/></td>
+                <td><input type="checkbox" className={`checkbox ${hideonprint}`} /></td>
                 <td>
-                <select
-                  className="select"
-                  name="discountType"
-                  value={discountType}
-                >
-                  <option value="c2c">C2C</option>
-                  <option value="glr">GLR</option>
-                  <option value="blr">BLR</option>
-                  <option value="slr">SLR</option>
-                  <option value="plr">PLR</option>
-                </select>
+                  <select
+                   className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={al_1plus4Dt}
+                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
                 </td>
                 <td>Allure(1+2)</td>
                 <td>90 x 100</td>
@@ -673,19 +678,20 @@ const sharePDFViaWhatsApp = async () => {
                 {taiwanPhotoPacking ? <td> {allure90x100taiwanPhoto}</td> : ""}
               </tr>
               <tr>
-                <td><input type="checkbox" className="checkbox"/></td>
+               <td><input type="checkbox" className={`checkbox ${hideonprint}`} /></td>
                 <td>
-                <select
-                  className="select"
-                  name="discountType"
-                   value={discountType}
-                >
-                  <option value="c2c">C2C</option>
-                  <option value="glr">GLR</option>
-                  <option value="blr">BLR</option>
-                  <option value="slr">SLR</option>
-                  <option value="plr">PLR</option>
-                </select>
+                  <select
+                   className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={al_1plus4Dt}
+                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
                 </td>
                 <td>Allure(1+1)</td>
                 <td>60 x 90</td>
@@ -701,19 +707,20 @@ const sharePDFViaWhatsApp = async () => {
                 {taiwanPhotoPacking ? <td> {allure60x90taiwanPhoto}</td> : ""}
               </tr>
               <tr>
-                <td><input type="checkbox" className="checkbox"/></td>
+               <td><input type="checkbox" className={`checkbox ${hideonprint}`} /></td>
                 <td>
-                <select
-                  className="select"
-                  name="discountType"
-                   value={discountType}
-                >
-                  <option value="c2c">C2C</option>
-                  <option value="glr">GLR</option>
-                  <option value="blr">BLR</option>
-                  <option value="slr">SLR</option>
-                  <option value="plr">PLR</option>
-                </select>
+                  <select
+                   className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={al_1plus4Dt}
+                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
                 </td>
                 <td>Allure(1+2)</td>
                 <td>90 x 108</td>
@@ -723,22 +730,23 @@ const sharePDFViaWhatsApp = async () => {
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto}</td> : ""}
               </tr>
               <tr>
-                <td><input type="checkbox" className="checkbox"/></td>
+               <td><input type="checkbox" className={`checkbox ${hideonprint}`} /></td>
                 <td>
-                <select
-                  className="select"
-                  name="discountType"
-                   value={discountType}
-                >
-                  <option value="c2c">C2C</option>
-                  <option value="glr">GLR</option>
-                  <option value="blr">BLR</option>
-                  <option value="slr">SLR</option>
-                  <option value="plr">PLR</option>
-                </select>
+                  <select
+                   className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={al_1plus4Dt}
+                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
                 </td>
                 <td className="bg-grey-100">Allure(1+4)</td>
-                
+
                 <td>90 x 100</td>
                 {stdPacking ? <td>{allure90x100stdPacking_1plus4}</td> : ""}
                 {ldPacking ? <td> {allure90x100Ld_1plus4}</td> : ""}
@@ -746,19 +754,20 @@ const sharePDFViaWhatsApp = async () => {
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto}</td> : ""}
               </tr>
               <tr >
-              <td><input type="checkbox" className="checkbox"/></td>
-              <td>
-                <select
-                  className="select"
-                  name="discountType"
-                   value={discountType}
-                >
-                  <option value="c2c">C2C</option>
-                  <option value="glr">GLR</option>
-                  <option value="blr">BLR</option>
-                  <option value="slr">SLR</option>
-                  <option value="plr">PLR</option>
-                </select>
+               <td><input type="checkbox" className={`checkbox ${hideonprint}`} /></td>
+                <td>
+                  <select
+                   className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={al_1plus4Dt}
+                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
                 </td>
                 <td >Allure(1+4)</td>
                 <td>90 x 108</td>
@@ -768,19 +777,20 @@ const sharePDFViaWhatsApp = async () => {
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto_1plus4}</td> : ""}
               </tr>
               <tr>
-                <td><input type="checkbox" className="checkbox"/></td>
+               <td><input type="checkbox" className={`checkbox ${hideonprint}`} /></td>
                 <td>
-                <select
-                  className="select"
-                  name="discountType"
-                   value={discountType}
-                >
-                  <option value="c2c">C2C</option>
-                  <option value="glr">GLR</option>
-                  <option value="blr">BLR</option>
-                  <option value="slr">SLR</option>
-                  <option value="plr">PLR</option>
-                </select>
+                  <select
+                   className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={al_1plus4Dt}
+                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
                 </td>
                 <td>Satiny (1+2)</td>
                 <td>90 x 100</td>
@@ -796,19 +806,20 @@ const sharePDFViaWhatsApp = async () => {
                 {taiwanPhotoPacking ? <td> {satiny90x100taiwanPhoto}</td> : ""}
               </tr>
               <tr>
-                <td><input type="checkbox" className="checkbox"/></td>
+              <td><input type="checkbox" className={`checkbox ${hideonprint}`} /></td>
                 <td>
-                <select
-                  className="select w-20"
-                  name="discountType"
-                   value={discountType}
-                >
-                  <option value="c2c">C2C</option>
-                  <option value="glr">GLR</option>
-                  <option value="blr">BLR</option>
-                  <option value="slr">SLR</option>
-                  <option value="plr">PLR</option>
-                </select>
+                  <select
+                   className={`select w-20 ${hideonprint}`}
+                    name="discountType"
+                    value={al_1plus4Dt}
+                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
                 </td>
                 <td>Satiny (1+1)</td>
                 <td>60 x 90</td>
@@ -824,19 +835,20 @@ const sharePDFViaWhatsApp = async () => {
                 {taiwanPhotoPacking ? <td>{satiny60x90taiwanPhoto}</td> : ""}
               </tr>
               <tr>
-                <td><input type="checkbox" className="checkbox"/></td>
+               <td><input type="checkbox" className={`checkbox ${hideonprint}`} /></td>
                 <td>
-                <select
-                  className="select"
-                  name="discountType"
-                   value={discountType}
-                >
-                  <option value="c2c">C2C</option>
-                  <option value="glr">GLR</option>
-                  <option value="blr">BLR</option>
-                  <option value="slr">SLR</option>
-                  <option value="plr">PLR</option>
-                </select>
+                  <select
+                   className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={al_1plus4Dt}
+                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
                 </td>
                 <td>Satiny(1+2)</td>
                 <td>90 x 108</td>
