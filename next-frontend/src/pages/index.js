@@ -23,7 +23,11 @@ export default function Home({
   const [isDownloading, setIsDownloading] = useState();
 
   //table discount type
-  const [al_1plus4Dt, setAl_1plus4Dt] = useState();
+  const [al_1plus2_90x100, setAl_1plus2_90x100] = useState();
+  const [al_1plus1_60x90, setAl_1plus1_60x90] = useState();
+  const [al_1plus2_90x108, setAl_1plus2_90x108] = useState();
+
+  console.log(al_1plus2_90x100)
   const [hideonprint, setHideonprint] = useState();
 
   useEffect(() => {
@@ -168,7 +172,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus2_90x100]
   );
 
   const allure60x90Ld = Math.round(
@@ -178,7 +182,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus1_60x90]
   );
 
   const allure90x108Ld = Math.round(
@@ -188,7 +192,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus2_90x108]
   );
   const allure90x108Ld_1plus4 = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 4) *
@@ -250,7 +254,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus2_90x100]
   );
 
   const allure60x90taiwan = Math.round(
@@ -260,7 +264,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus1_60x90]
   );
 
   const allure90x108taiwan = Math.round(
@@ -270,7 +274,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus2_90x108]
   );
   const allure90x108taiwan_1plus4 = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 4) *
@@ -321,7 +325,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus2_90x100]
   );
 
   const allure60x90taiwanPhoto = Math.round(
@@ -331,7 +335,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus1_60x90]
   );
 
   const allure90x108taiwanPhoto = Math.round(
@@ -341,7 +345,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus2_90x108]
   );
   const allure90x108taiwanPhoto_1plus4 = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 4) *
@@ -397,7 +401,7 @@ export default function Home({
         standardPack[0].stiffner) *
       (1 + standardPack[0].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus2_90x100]
   );
   const allure90x108stdPacking = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 2) *
@@ -410,7 +414,7 @@ export default function Home({
         standardPack[0].stiffner) *
       (1 + standardPack[0].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus2_90x108]
   );
   const allure90x108stdPacking_1plus4 = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 4) *
@@ -451,7 +455,7 @@ export default function Home({
         standardPack[0].stiffner) *
       (1 + standardPack[0].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][discountType]
+    costType[0][al_1plus1_60x90]
   );
 
   const satiny90x100stdPacking = Math.round(
@@ -660,8 +664,8 @@ export default function Home({
                   <select
                    className={`select ${hideonprint}`}
                     name="discountType"
-                    value={al_1plus4Dt}
-                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                    value={al_1plus2_90x100}
+                    onChange={(e) => setAl_1plus2_90x100(e.target.value)}
                   >
                     <option value="c2c">C2C</option>
                     <option value="glr">GLR</option>
@@ -683,8 +687,8 @@ export default function Home({
                   <select
                    className={`select ${hideonprint}`}
                     name="discountType"
-                    value={al_1plus4Dt}
-                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                    value={al_1plus1_60x90}
+                    onChange={(e) => setAl_1plus1_60x90(e.target.value)}
                   >
                     <option value="c2c">C2C</option>
                     <option value="glr">GLR</option>
@@ -712,8 +716,8 @@ export default function Home({
                   <select
                    className={`select ${hideonprint}`}
                     name="discountType"
-                    value={al_1plus4Dt}
-                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                    value={al_1plus2_90x108}
+                    onChange={(e) => setAl_1plus2_90x108(e.target.value)}
                   >
                     <option value="c2c">C2C</option>
                     <option value="glr">GLR</option>
@@ -735,8 +739,8 @@ export default function Home({
                   <select
                    className={`select ${hideonprint}`}
                     name="discountType"
-                    value={al_1plus4Dt}
-                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                    value={al_1plus2_90x100}
+                    onChange={(e) => setAl_1plus2_90x100(e.target.value)}
                   >
                     <option value="c2c">C2C</option>
                     <option value="glr">GLR</option>
@@ -759,8 +763,8 @@ export default function Home({
                   <select
                    className={`select ${hideonprint}`}
                     name="discountType"
-                    value={al_1plus4Dt}
-                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                    value={al_1plus2_90x100}
+                    onChange={(e) => setAl_1plus2_90x100(e.target.value)}
                   >
                     <option value="c2c">C2C</option>
                     <option value="glr">GLR</option>
@@ -782,8 +786,8 @@ export default function Home({
                   <select
                    className={`select ${hideonprint}`}
                     name="discountType"
-                    value={al_1plus4Dt}
-                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                    value={al_1plus2_90x100}
+                    onChange={(e) => setAl_1plus2_90x100(e.target.value)}
                   >
                     <option value="c2c">C2C</option>
                     <option value="glr">GLR</option>
@@ -811,8 +815,8 @@ export default function Home({
                   <select
                    className={`select w-20 ${hideonprint}`}
                     name="discountType"
-                    value={al_1plus4Dt}
-                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                    value={al_1plus2_90x100}
+                    onChange={(e) => setAl_1plus2_90x100(e.target.value)}
                   >
                     <option value="c2c">C2C</option>
                     <option value="glr">GLR</option>
@@ -840,8 +844,8 @@ export default function Home({
                   <select
                    className={`select ${hideonprint}`}
                     name="discountType"
-                    value={al_1plus4Dt}
-                    onChange={(e) => setAl_1plus4Dt(e.target.value)}
+                    value={al_1plus2_90x100}
+                    onChange={(e) => setAl_1plus2_90x100(e.target.value)}
                   >
                     <option value="c2c">C2C</option>
                     <option value="glr">GLR</option>
