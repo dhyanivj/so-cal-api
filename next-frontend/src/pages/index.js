@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { createClient } from "next-sanity";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
 
 export default function Home({
@@ -16,15 +16,31 @@ export default function Home({
   const [discountType, setDiscountType] = useState("blr");
   const outputRef = useRef(null);
   // packing checkbox
-  const [stdPacking, setStdPacking] = useState(false);
-  const [ldPacking, setLdPacking] = useState(true);
-  const [taiwanPacking, setTaiwanPacking] = useState(false);
-  const [taiwanPhotoPacking, setTaiwanPhotoPacking] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [stdPacking, setStdPacking] = useState();
+  const [ldPacking, setLdPacking] = useState();
+  const [taiwanPacking, setTaiwanPacking] = useState();
+  const [taiwanPhotoPacking, setTaiwanPhotoPacking] = useState();
+  const [isDownloading, setIsDownloading] = useState();
+
+  useEffect(() => {
+    setStdPacking(true);
+    setLdPacking(false);
+    setTaiwanPacking(false);
+    setTaiwanPhotoPacking(false)
+    setIsDownloading(false)
+  }, []);
+  
+function onDownloadSelected(){
+  return (
+    console.log("Download Selected")
+  )
+}
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsDownloading(true);
-    // Create a new jsPDF instance with A4 size and unit in pt
+    // Create a new jsPDF instance with A3 size and unit in pt
+
     const pdf = new jsPDF({
       orientation: "portrait",
       unit: "pt",
@@ -35,7 +51,48 @@ export default function Home({
     const output = outputRef.current;
 
     //date in pdf name
+    const now = new Date();
+    const day = now.getDate().toString().padStart(2, "0");
+    const month = (now.getMonth() + 1).toString().padStart(2, "0");
+    const year = now.getFullYear().toString().slice(-2);
+    const dateString = `${day}-${month}-${year}`;
+    const fileName = `sleepingowls-rate-card-${dateString}.pdf`;
 
+    // Add the output div to the PDF document with auto-scaling
+    pdf.html(output, {
+      callback: () => {
+        // Get the table wrapper div as a DOM element
+        const tableWrapper = document.querySelector(".table-wrapper");
+        
+        // Add the table wrapper div to the PDF document with auto-scaling
+        pdf.html(tableWrapper, {
+          x: 0,
+          y: 0,
+          scaleFactor: pdf.internal.pageSize.width / output.offsetWidth, // Scale factor to fit content within page size
+          callback: () => {
+            pdf.save(fileName);
+          },
+        });
+        setIsDownloading(false);
+      },
+    });
+  };
+
+//whatsapp function
+
+const generatePDF = () => {
+  return new Promise((resolve, reject) => {
+    // Create a new jsPDF instance with A3 size and unit in pt
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "pt",
+      format: "a3",
+    });
+
+    // Get the output div as a DOM element
+    const output = outputRef.current;
+
+    //date in pdf name
     const now = new Date();
     const day = now.getDate().toString().padStart(2, "0");
     const month = (now.getMonth() + 1).toString().padStart(2, "0");
@@ -53,32 +110,49 @@ export default function Home({
         pdf.html(tableWrapper, {
           x: 0,
           y: 0,
-          scaleFactor: pdf.internal.pageSize.width / output.offsetWidth, // Scale factor to fit content within page size
+          scaleFactor:
+            pdf.internal.pageSize.width / output.offsetWidth, // Scale factor to fit content within page size
           callback: () => {
-            pdf.save(fileName);
+            // Resolve the Promise with the PDF file as a Blob
+            resolve(pdf.output("blob"));
           },
         });
-        setIsDownloading(false);
       },
     });
-  };
+  });
+};
 
-  const testdata =
-    (standardPack[0].insert +
-      standardPack[0].photo +
-      standardPack[0].pvcBox +
-      standardPack[0].stiffner) *
-    (1 + standardPack[0].wastePercentage / 100);
 
-  console.log(standardPack);
+// whatsapp share
+const sharePDFViaWhatsApp = async () => {
+  try {
+    // Generate the PDF file
+    const pdfBlob = await generatePDF();
 
-  // console.log(testdata)
+    // Create a URL for the PDF file
+    const pdfUrl = URL.createObjectURL(pdfBlob);
 
-  // console.log(priceData);
-  // console.log(commoncost);
+    // Create a WhatsApp message with the PDF file as an attachment
+    const message = `Check out my rate card!`;
+    const file = new File([pdfBlob], "rate-card.pdf", { type: "application/pdf" });
+    const formData = new FormData();
+    formData.append("text", message);
+    formData.append("blob", file);
+
+    // Open the WhatsApp share URL with the message and attachment
+    const shareUrl = `https://wa.me/?text=${encodeURIComponent(message)}&attachment=${encodeURIComponent(pdfUrl)}`;
+    window.open(shareUrl, "_blank");
+
+    // Clean up the URL object
+    URL.revokeObjectURL(pdfUrl);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
   // console.log(standardPack);
-  // console.log(fabricPrice);
-  // console.log(packingType)
+
 
   const allure90x100Ld = Math.round(
     (((bedsheetSize[0].size90100 + stitchingCost[0].pillowMeterCost * 2) *
@@ -118,6 +192,7 @@ export default function Home({
       commoncost[0].overhead) /
     costType[0][discountType]
   );
+  
   const allure90x100Ld_1plus4 = Math.round(
     (((bedsheetSize[0].size90100 + stitchingCost[0].pillowMeterCost * 4) *
       (fabricPrice[0].AllureFabricPrice + commoncost[0].transportcost) +
@@ -436,7 +511,8 @@ export default function Home({
                 <select
                   className="select"
                   name="discountType"
-                  value={discountType}
+                   value={discountType}
+                
                   onChange={(e) => setDiscountType(e.target.value)}
                 >
                   <option value="c2c">C2C</option>
@@ -498,7 +574,7 @@ export default function Home({
               </div>
 
               <div className="form-field pt-5">
-                <div className="form-control justify-between">
+                <div className="form-control flex-col">
                   <button
                     type="submit"
                     className="btn btn-primary w-full font-bold"
@@ -511,6 +587,23 @@ export default function Home({
                     />
                     {isDownloading ? "Downloading..." : "Download PDF"}
                   </button>
+                
+                 <button
+                    className="btn btn-success w-full font-bold"
+                    onClick={sharePDFViaWhatsApp}
+                 type="button"
+                 >
+                    Whatsapp Share
+                  </button>
+                
+                 <button
+                    className="btn btn-secondary w-full font-bold"
+                 onClick={onDownloadSelected}
+                 type="button"
+                 >
+                    Download Selected
+                  </button>
+                
                 </div>
               </div>
             </div>
@@ -524,6 +617,8 @@ export default function Home({
           <table border="1" className="table card bg-white p-5 m-5">
             <tbody>
               <tr>
+                <th></th>
+                <th></th>
                 <th>Design</th>
                 <th>Size</th>
                 {stdPacking ? (
@@ -556,6 +651,20 @@ export default function Home({
                 )}
               </tr>
               <tr>
+                <td><input type="checkbox" className="checkbox"/></td>
+                <td>
+                <select
+                  className="select"
+                  name="discountType"
+                  value={discountType}
+                >
+                  <option value="c2c">C2C</option>
+                  <option value="glr">GLR</option>
+                  <option value="blr">BLR</option>
+                  <option value="slr">SLR</option>
+                  <option value="plr">PLR</option>
+                </select>
+                </td>
                 <td>Allure(1+2)</td>
                 <td>90 x 100</td>
                 {stdPacking ? <td>{allure90x100stdPacking}</td> : ""}
@@ -564,6 +673,20 @@ export default function Home({
                 {taiwanPhotoPacking ? <td> {allure90x100taiwanPhoto}</td> : ""}
               </tr>
               <tr>
+                <td><input type="checkbox" className="checkbox"/></td>
+                <td>
+                <select
+                  className="select"
+                  name="discountType"
+                   value={discountType}
+                >
+                  <option value="c2c">C2C</option>
+                  <option value="glr">GLR</option>
+                  <option value="blr">BLR</option>
+                  <option value="slr">SLR</option>
+                  <option value="plr">PLR</option>
+                </select>
+                </td>
                 <td>Allure(1+1)</td>
                 <td>60 x 90</td>
                 {stdPacking ? <td>{allure60x90stdPacking}</td> : ""}
@@ -578,6 +701,20 @@ export default function Home({
                 {taiwanPhotoPacking ? <td> {allure60x90taiwanPhoto}</td> : ""}
               </tr>
               <tr>
+                <td><input type="checkbox" className="checkbox"/></td>
+                <td>
+                <select
+                  className="select"
+                  name="discountType"
+                   value={discountType}
+                >
+                  <option value="c2c">C2C</option>
+                  <option value="glr">GLR</option>
+                  <option value="blr">BLR</option>
+                  <option value="slr">SLR</option>
+                  <option value="plr">PLR</option>
+                </select>
+                </td>
                 <td>Allure(1+2)</td>
                 <td>90 x 108</td>
                 {stdPacking ? <td>{allure90x108stdPacking}</td> : ""}
@@ -586,7 +723,22 @@ export default function Home({
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto}</td> : ""}
               </tr>
               <tr>
+                <td><input type="checkbox" className="checkbox"/></td>
+                <td>
+                <select
+                  className="select"
+                  name="discountType"
+                   value={discountType}
+                >
+                  <option value="c2c">C2C</option>
+                  <option value="glr">GLR</option>
+                  <option value="blr">BLR</option>
+                  <option value="slr">SLR</option>
+                  <option value="plr">PLR</option>
+                </select>
+                </td>
                 <td className="bg-grey-100">Allure(1+4)</td>
+                
                 <td>90 x 100</td>
                 {stdPacking ? <td>{allure90x100stdPacking_1plus4}</td> : ""}
                 {ldPacking ? <td> {allure90x100Ld_1plus4}</td> : ""}
@@ -594,6 +746,20 @@ export default function Home({
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto}</td> : ""}
               </tr>
               <tr >
+              <td><input type="checkbox" className="checkbox"/></td>
+              <td>
+                <select
+                  className="select"
+                  name="discountType"
+                   value={discountType}
+                >
+                  <option value="c2c">C2C</option>
+                  <option value="glr">GLR</option>
+                  <option value="blr">BLR</option>
+                  <option value="slr">SLR</option>
+                  <option value="plr">PLR</option>
+                </select>
+                </td>
                 <td >Allure(1+4)</td>
                 <td>90 x 108</td>
                 {stdPacking ? <td>{allure90x108stdPacking_1plus4}</td> : ""}
@@ -602,6 +768,20 @@ export default function Home({
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto_1plus4}</td> : ""}
               </tr>
               <tr>
+                <td><input type="checkbox" className="checkbox"/></td>
+                <td>
+                <select
+                  className="select"
+                  name="discountType"
+                   value={discountType}
+                >
+                  <option value="c2c">C2C</option>
+                  <option value="glr">GLR</option>
+                  <option value="blr">BLR</option>
+                  <option value="slr">SLR</option>
+                  <option value="plr">PLR</option>
+                </select>
+                </td>
                 <td>Satiny (1+2)</td>
                 <td>90 x 100</td>
                 {stdPacking ? <td>{satiny90x100stdPacking}</td> : ""}
@@ -616,6 +796,20 @@ export default function Home({
                 {taiwanPhotoPacking ? <td> {satiny90x100taiwanPhoto}</td> : ""}
               </tr>
               <tr>
+                <td><input type="checkbox" className="checkbox"/></td>
+                <td>
+                <select
+                  className="select w-20"
+                  name="discountType"
+                   value={discountType}
+                >
+                  <option value="c2c">C2C</option>
+                  <option value="glr">GLR</option>
+                  <option value="blr">BLR</option>
+                  <option value="slr">SLR</option>
+                  <option value="plr">PLR</option>
+                </select>
+                </td>
                 <td>Satiny (1+1)</td>
                 <td>60 x 90</td>
                 {stdPacking ? <td>{satiny60x90stdPacking}</td> : ""}
@@ -630,6 +824,20 @@ export default function Home({
                 {taiwanPhotoPacking ? <td>{satiny60x90taiwanPhoto}</td> : ""}
               </tr>
               <tr>
+                <td><input type="checkbox" className="checkbox"/></td>
+                <td>
+                <select
+                  className="select"
+                  name="discountType"
+                   value={discountType}
+                >
+                  <option value="c2c">C2C</option>
+                  <option value="glr">GLR</option>
+                  <option value="blr">BLR</option>
+                  <option value="slr">SLR</option>
+                  <option value="plr">PLR</option>
+                </select>
+                </td>
                 <td>Satiny(1+2)</td>
                 <td>90 x 108</td>
                 {stdPacking ? <td>{satiny90x108stdPacking}</td> : ""}

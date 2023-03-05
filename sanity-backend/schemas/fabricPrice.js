@@ -14,7 +14,5 @@ export default {
         type: 'number',
         title: 'Allure 90" Fabric Price'
       },
-      
-      
     ]
   }
