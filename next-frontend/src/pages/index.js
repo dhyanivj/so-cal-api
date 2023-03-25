@@ -635,13 +635,13 @@ export default function Home({
                     Whatsapp Share
                   </button>
 
-                  <button
+                  {/* <button
                     className="btn btn-secondary w-full font-bold"
                     onClick={onDownloadSelected}
                     type="button"
                   >
                     Download Selected
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
