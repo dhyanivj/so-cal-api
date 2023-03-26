@@ -3,6 +3,7 @@ import { createClient } from "next-sanity";
 import { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
 
+
 export default function Home({
   priceData,
   ptype,
@@ -21,7 +22,7 @@ export default function Home({
   const [taiwanPacking, setTaiwanPacking] = useState();
   const [taiwanPhotoPacking, setTaiwanPhotoPacking] = useState();
   const [isDownloading, setIsDownloading] = useState();
-  
+
   //checked on print
   const [isChecked, setIsChecked] = useState(true);
   const [isChecked2, setIsChecked2] = useState(true);
@@ -38,32 +39,45 @@ export default function Home({
   const [al_1plus2_90x108, setAl_1plus2_90x108] = useState(discountType);
   const [al_1plus4_90x100, setAl_1plus4_90x100] = useState(discountType);
   const [al_1plus4_90x108, setAl_1plus4_90x108] = useState(discountType);
-  const [sanity_1plus2_90x100, setSanity_1plus2_90x100] = useState(discountType);
+  const [sanity_1plus2_90x100, setSanity_1plus2_90x100] =
+    useState(discountType);
   const [satiny_1plus1_60x90, setSatiny_1plus1_60x90] = useState(discountType);
-  const [satiny_1plus2_90x108, setSatiny_1plus2_90x108] = useState(discountType);
+  const [satiny_1plus2_90x108, setSatiny_1plus2_90x108] =
+    useState(discountType);
 
-
-  console.log(al_1plus2_90x100)
+  console.log(al_1plus2_90x100);
   const [hideonprint, setHideonprint] = useState();
+
+//standard size
+const [stdSize, setStdSize] = useState("");
+
+// party form name states
+const [inputValue, setInputValue] = useState("");
+const [partyName, setPartyName] = useState("");
+
+const today = new Date().toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "numeric",
+  year: "numeric",
+});
+
 
   useEffect(() => {
     setStdPacking(true);
     setLdPacking(false);
     setTaiwanPacking(false);
-    setTaiwanPhotoPacking(false)
-    setIsDownloading(false)
+    setTaiwanPhotoPacking(false);
+    setIsDownloading(false);
   }, []);
 
   function onDownloadSelected() {
-    return (
-      console.log("Download Selected")
-    )
+    return console.log("Download Selected");
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsDownloading(true);
-    setHideonprint("hidden")
+    setHideonprint("hidden");
     // Create a new jsPDF instance with A3 size and unit in pt
 
     const pdf = new jsPDF({
@@ -99,8 +113,7 @@ export default function Home({
           },
         });
         setIsDownloading(false);
-    setHideonprint("")
-
+        setHideonprint("");
       },
     });
   };
@@ -137,8 +150,7 @@ export default function Home({
           pdf.html(tableWrapper, {
             x: 0,
             y: 0,
-            scaleFactor:
-              pdf.internal.pageSize.width / output.offsetWidth, // Scale factor to fit content within page size
+            scaleFactor: pdf.internal.pageSize.width / output.offsetWidth, // Scale factor to fit content within page size
             callback: () => {
               // Resolve the Promise with the PDF file as a Blob
               resolve(pdf.output("blob"));
@@ -148,7 +160,6 @@ export default function Home({
       });
     });
   };
-
 
   // whatsapp share
   const sharePDFViaWhatsApp = async () => {
@@ -161,13 +172,17 @@ export default function Home({
 
       // Create a WhatsApp message with the PDF file as an attachment
       const message = `Check out my rate card!`;
-      const file = new File([pdfBlob], "rate-card.pdf", { type: "application/pdf" });
+      const file = new File([pdfBlob], "rate-card.pdf", {
+        type: "application/pdf",
+      });
       const formData = new FormData();
       formData.append("text", message);
       formData.append("blob", file);
 
       // Open the WhatsApp share URL with the message and attachment
-      const shareUrl = `https://wa.me/?text=${encodeURIComponent(message)}&attachment=${encodeURIComponent(pdfUrl)}`;
+      const shareUrl = `https://wa.me/?text=${encodeURIComponent(
+        message
+      )}&attachment=${encodeURIComponent(pdfUrl)}`;
       window.open(shareUrl, "_blank");
 
       // Clean up the URL object
@@ -177,9 +192,7 @@ export default function Home({
     }
   };
 
-
   // console.log(standardPack);
-
 
   const allure90x100Ld = Math.round(
     (((bedsheetSize[0].size90100 + stitchingCost[0].pillowMeterCost * 2) *
@@ -188,7 +201,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][al_1plus2_90x100]
+      costType[0][al_1plus2_90x100]
   );
 
   const allure60x90Ld = Math.round(
@@ -198,7 +211,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][al_1plus1_60x90]
+      costType[0][al_1plus1_60x90]
   );
 
   const allure90x108Ld = Math.round(
@@ -208,7 +221,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][al_1plus2_90x108]
+      costType[0][al_1plus2_90x108]
   );
 
   const allure90x108Ld_1plus4 = Math.round(
@@ -218,7 +231,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 4) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][al_1plus4_90x108]
+      costType[0][al_1plus4_90x108]
   );
 
   const allure90x100Ld_1plus4 = Math.round(
@@ -228,7 +241,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 4) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][al_1plus4_90x100]
+      costType[0][al_1plus4_90x100]
   );
 
   const satiny90x100Ld = Math.round(
@@ -238,7 +251,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][sanity_1plus2_90x100]
+      costType[0][sanity_1plus2_90x100]
   );
 
   const satiny60x90Ld = Math.round(
@@ -248,7 +261,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][satiny_1plus1_60x90]
+      costType[0][satiny_1plus1_60x90]
   );
 
   const satiny90x108Ld = Math.round(
@@ -258,9 +271,8 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].ld) *
       commoncost[0].overhead) /
-    costType[0][satiny_1plus2_90x108]
+      costType[0][satiny_1plus2_90x108]
   );
-
 
   // for taiwan
 
@@ -271,7 +283,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][al_1plus2_90x100]
+      costType[0][al_1plus2_90x100]
   );
 
   const allure60x90taiwan = Math.round(
@@ -281,7 +293,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][al_1plus1_60x90]
+      costType[0][al_1plus1_60x90]
   );
 
   const allure90x108taiwan = Math.round(
@@ -291,7 +303,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][al_1plus2_90x108]
+      costType[0][al_1plus2_90x108]
   );
   const allure90x108taiwan_1plus4 = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 4) *
@@ -300,7 +312,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 4) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][al_1plus4_90x108]
+      costType[0][al_1plus4_90x108]
   );
 
   const satiny90x100taiwan = Math.round(
@@ -310,7 +322,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][sanity_1plus2_90x100]
+      costType[0][sanity_1plus2_90x100]
   );
 
   const satiny60x90taiwan = Math.round(
@@ -320,7 +332,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][satiny_1plus1_60x90]
+      costType[0][satiny_1plus1_60x90]
   );
 
   const satiny90x108taiwan = Math.round(
@@ -330,7 +342,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwan) *
       commoncost[0].overhead) /
-    costType[0][satiny_1plus2_90x108]
+      costType[0][satiny_1plus2_90x108]
   );
 
   // for taiwanPhoto
@@ -342,7 +354,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][al_1plus2_90x100]
+      costType[0][al_1plus2_90x100]
   );
 
   const allure60x90taiwanPhoto = Math.round(
@@ -352,7 +364,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][al_1plus1_60x90]
+      costType[0][al_1plus1_60x90]
   );
 
   const allure90x108taiwanPhoto = Math.round(
@@ -362,7 +374,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][al_1plus2_90x108]
+      costType[0][al_1plus2_90x108]
   );
   const allure90x108taiwanPhoto_1plus4 = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 4) *
@@ -371,9 +383,8 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 4) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][al_1plus4_90x108]
+      costType[0][al_1plus4_90x108]
   );
-
 
   const satiny90x100taiwanPhoto = Math.round(
     (((bedsheetSize[0].size90100 + stitchingCost[0].pillowMeterCost * 2) *
@@ -382,7 +393,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][sanity_1plus2_90x100]
+      costType[0][sanity_1plus2_90x100]
   );
 
   const satiny60x90taiwanPhoto = Math.round(
@@ -392,7 +403,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][satiny_1plus1_60x90]
+      costType[0][satiny_1plus1_60x90]
   );
 
   const satiny90x108taiwanPhoto = Math.round(
@@ -402,7 +413,7 @@ export default function Home({
         stitchingCost[0].pillowStitchingCost * 2) +
       ptype[0].taiwanPhoto) *
       commoncost[0].overhead) /
-    costType[0][satiny_1plus2_90x108]
+      costType[0][satiny_1plus2_90x108]
   );
 
   // std packing
@@ -416,9 +427,9 @@ export default function Home({
         standardPack[0].photo +
         standardPack[0].pvcBox +
         standardPack[0].stiffner) *
-      (1 + standardPack[0].wastePercentage / 100)) *
+        (1 + standardPack[0].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][al_1plus2_90x100]
+      costType[0][al_1plus2_90x100]
   );
   const allure90x108stdPacking = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 2) *
@@ -429,9 +440,9 @@ export default function Home({
         standardPack[0].photo +
         standardPack[0].pvcBox +
         standardPack[0].stiffner) *
-      (1 + standardPack[0].wastePercentage / 100)) *
+        (1 + standardPack[0].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][al_1plus2_90x108]
+      costType[0][al_1plus2_90x108]
   );
   const allure90x108stdPacking_1plus4 = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 4) *
@@ -442,9 +453,9 @@ export default function Home({
         standardPack[3].photo +
         standardPack[3].pvcBox +
         standardPack[3].stiffner) *
-      (1 + standardPack[3].wastePercentage / 100)) *
+        (1 + standardPack[3].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][al_1plus4_90x108]
+      costType[0][al_1plus4_90x108]
   );
   const allure90x100stdPacking_1plus4 = Math.round(
     (((bedsheetSize[0].size90100 + stitchingCost[0].pillowMeterCost * 4) *
@@ -455,11 +466,10 @@ export default function Home({
         standardPack[3].photo +
         standardPack[3].pvcBox +
         standardPack[3].stiffner) *
-      (1 + standardPack[3].wastePercentage / 100)) *
+        (1 + standardPack[3].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][al_1plus4_90x100]
+      costType[0][al_1plus4_90x100]
   );
-
 
   const allure60x90stdPacking = Math.round(
     (((bedsheetSize[0].size6090 + stitchingCost[0].pillowMeterCost) *
@@ -470,9 +480,9 @@ export default function Home({
         standardPack[4].photo +
         standardPack[4].pvcBox +
         standardPack[0].stiffner) *
-      (1 + standardPack[0].wastePercentage / 100)) *
+        (1 + standardPack[0].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][al_1plus1_60x90]
+      costType[0][al_1plus1_60x90]
   );
 
   const satiny90x100stdPacking = Math.round(
@@ -484,9 +494,9 @@ export default function Home({
         standardPack[0].photo +
         standardPack[0].pvcBox +
         standardPack[0].stiffner) *
-      (1 + standardPack[0].wastePercentage / 100)) *
+        (1 + standardPack[0].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][sanity_1plus2_90x100]
+      costType[0][sanity_1plus2_90x100]
   );
   const satiny90x108stdPacking = Math.round(
     (((bedsheetSize[0].size90108 + stitchingCost[0].pillowMeterCost * 2) *
@@ -497,9 +507,9 @@ export default function Home({
         standardPack[0].photo +
         standardPack[0].pvcBox +
         standardPack[0].stiffner) *
-      (1 + standardPack[0].wastePercentage / 100)) *
+        (1 + standardPack[0].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][satiny_1plus2_90x108]
+      costType[0][satiny_1plus2_90x108]
   );
   const satiny60x90stdPacking = Math.round(
     (((bedsheetSize[0].size6090 + stitchingCost[0].pillowMeterCost) *
@@ -510,9 +520,9 @@ export default function Home({
         standardPack[4].photo +
         standardPack[4].pvcBox +
         standardPack[0].stiffner) *
-      (1 + standardPack[0].wastePercentage / 100)) *
+        (1 + standardPack[0].wastePercentage / 100)) *
       commoncost[0].overhead) /
-    costType[0][satiny_1plus1_60x90]
+      costType[0][satiny_1plus1_60x90]
   );
 
   return (
@@ -524,134 +534,181 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-
       <div className="w-100 bg-blue-300">
-        <div className="mx-auto flex w-full max-w-sm flex-col gap-6 p-5">
-          <div className="flex flex-col items-center">
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <div className="form-field">
-                <label className="form-label font-semibold">
-                  Discount type
-                </label>
-                <select
-                  className="select"
-                  name="discountType"
-                  value={discountType}
-                  // onChange={(e) => setDiscountType(e.target.value)}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setDiscountType(value);
-                    setAl_1plus2_90x100(value)
-                    setAl_1plus1_60x90(value)
-                    setAl_1plus2_90x108(value)
-                    setAl_1plus4_90x100(value)
-                    setAl_1plus4_90x108(value)
-                    setSanity_1plus2_90x100(value)
-                    setSatiny_1plus1_60x90(value)
-                    setSatiny_1plus2_90x108(value)
-                  }}
->
-                  <option value="c2c">C2C</option>
-                  <option value="glr">GLR</option>
-                  <option value="blr">BLR</option>
-                  <option value="slr">SLR</option>
-                  <option value="plr">PLR</option>
-                </select>
-              </div>
-              <div className="mb-4 mt-3">
-            
-                <label
-                  htmlFor="packing"
-                  className="form-label mb-2 font-semibold"
-                >
-                  Packing Type
-                </label>
-                <div role="group" aria-labelledby="checkbox-group">
-                  <label className="flex cursor-pointer gap-2">
-                    <input
-                      type="checkbox"
-                      name="packing"
-                      checked={stdPacking}
-                      onChange={(e) => setStdPacking(e.target.checked)}
-                      className="checkbox"
-                    />
-                    <span>Std. Packing</span>
+        <div className="flex justify-center  gap-6 p-5">
+          <div className="bg-white rounded-lg shadow p-5 px-14 discount-form ">
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <div className="form-field">
+                  <label className="form-label font-semibold">
+                    Discount type
                   </label>
-                  <label className="flex cursor-pointer gap-2">
-                    <input
-                      type="checkbox"
-                      name="packing"
-                      checked={ldPacking}
-                      onChange={(e) => setLdPacking(e.target.checked)}
-                      className="checkbox"
-                    />
-                    <span>LD</span>
+                  <select
+                    className="select"
+                    name="discountType"
+                    value={discountType}
+                
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setDiscountType(value);
+                      setAl_1plus2_90x100(value);
+                      setAl_1plus1_60x90(value);
+                      setAl_1plus2_90x108(value);
+                      setAl_1plus4_90x100(value);
+                      setAl_1plus4_90x108(value);
+                      setSanity_1plus2_90x100(value);
+                      setSatiny_1plus1_60x90(value);
+                      setSatiny_1plus2_90x108(value);
+                    }}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
+                </div>
+                <div className="mb-4 mt-3">
+                  <label
+                    htmlFor="packing"
+                    className="form-label mb-2 font-semibold"
+                  >
+                    Packing Type
                   </label>
+                  <div role="group" aria-labelledby="checkbox-group">
+                    <label className="flex cursor-pointer gap-2">
+                      <input
+                        type="checkbox"
+                        name="packing"
+                        checked={stdPacking}
+                        onChange={(e) => setStdPacking(e.target.checked)}
+                        className="checkbox"
+                      />
+                      <span>Std. Packing</span>
+                    </label>
+                    <label className="flex cursor-pointer gap-2">
+                      <input
+                        type="checkbox"
+                        name="packing"
+                        checked={ldPacking}
+                        onChange={(e) => setLdPacking(e.target.checked)}
+                        className="checkbox"
+                      />
+                      <span>LD</span>
+                    </label>
+                    <label className="flex cursor-pointer gap-2">
+                      <input
+                        type="checkbox"
+                        name="packing"
+                        checked={taiwanPacking}
+                        onChange={(e) => setTaiwanPacking(e.target.checked)}
+                        className="checkbox"
+                      />
+                      <span>Taiwan</span>
+                    </label>
+                    <label className="flex cursor-pointer gap-2">
+                      <input
+                        type="checkbox"
+                        name="packing"
+                        checked={taiwanPhotoPacking}
+                        onChange={(e) =>
+                          setTaiwanPhotoPacking(e.target.checked)
+                        }
+                        className="checkbox"
+                      />
+                      <span>Taiwan + Photo</span>
+                    </label>
+                  </div>
+                  <div>
+                  </div>
+                </div>
                   <label className="flex cursor-pointer gap-2">
-                    <input
-                      type="checkbox"
-                      name="packing"
-                      checked={taiwanPacking}
-                      onChange={(e) => setTaiwanPacking(e.target.checked)}
-                      className="checkbox"
-                    />
-                    <span>Taiwan</span>
+                      <input
+                        type="checkbox"
+                        name="packing"
+                        className="switch"
+                        checked={stdSize}
+                        onChange={(e) =>
+                          setStdSize(e.target.checked)
+                        }
+                      />
+                      <span className="font-bold">Standard Design</span>
                   </label>
-                  <label className="flex cursor-pointer gap-2">
-                    <input
-                      type="checkbox"
-                      name="packing"
-                      checked={taiwanPhotoPacking}
-                      onChange={(e) => setTaiwanPhotoPacking(e.target.checked)}
-                      className="checkbox"
-                    />
-                    <span>Taiwan + Photo</span>
-                  </label>
+
+                <div className="form-field pt-5">
+                  <div className="form-control flex-col">
+                    <button
+                      type="submit"
+                      className="btn btn-primary w-full font-bold"
+                    >
+                      <img
+                        src="./download-icon.png"
+                        alt="downloadbtn"
+                        width={25}
+                        className="mr-4"
+                      />
+                      {isDownloading ? "Downloading..." : "Download PDF"}
+                    </button>
+
+                    <button
+                      className="btn btn-success w-full font-bold"
+                      onClick={sharePDFViaWhatsApp}
+                      type="button"
+                    >
+                      Whatsapp Share
+                    </button>
+                  </div>
                 </div>
               </div>
+            </form>
+          </div>
+          {/* ------------------Party Name form  ------------------- */}
+          <div>
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="mx-auto flex w-full max-w-sm flex-col gap-6">
+            
+                <div className="form-group">
+                  <div className="form-field">
+                    <label className="form-label font-semibold">Party Name</label>
+                    <input
+                      placeholder="Type here"
+                      type="text"
+                      value={inputValue}   onChange={(event) => setInputValue(event.target.value)}
 
-              <div className="form-field pt-5">
-                <div className="form-control flex-col">
-                  <button
-                    type="submit"
-                    className="btn btn-primary w-full font-bold"
-                  >
-                    <img
-                      src="./download-icon.png"
-                      alt="downloadbtn"
-                      width={25}
-                      className="mr-4"
+                      className="input max-w-full"
                     />
-                    {isDownloading ? "Downloading..." : "Download PDF"}
-                  </button>
-
-                  <button
-                    className="btn btn-success w-full font-bold"
-                    onClick={sharePDFViaWhatsApp}
-                    type="button"
-                  >
-                    Whatsapp Share
-                  </button>
-
-                  {/* <button
-                    className="btn btn-secondary w-full font-bold"
-                    onClick={onDownloadSelected}
-                    type="button"
-                  >
-                    Download Selected
-                  </button> */}
+                  </div>
+                  <div className="form-field pt-2">
+                    <div className="form-control justify-between">
+                      <button type="button" className="btn btn-primary w-full"
+                     onClick={() => setPartyName(inputValue)}>
+                        Update
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </form>
+          </div>
+          {/* ------------------End Party Name form  ------------------- */}
         </div>
       </div>
       {/* table */}
       <div>
         <div className="table-wrapper" ref={outputRef}>
-          <img src="./logo.png" alt="logo" width={150} className="ml-16 mt-10" />
+        <div className="flex flex-row items-center ">
+        <div>
+        <img
+            src="./logo.png"
+            alt="logo"
+            width={150}
+            className="ml-16 mt-10"
+          />
+        </div>
+            <div className="ml-80"> 
+            {today}
+            <p><span className="font-bold">Party Name :</span> {partyName}</p></div>
+        </div>
           <table border="1" className="table card bg-white p-5 m-5">
             <tbody>
               <tr>
@@ -688,16 +745,19 @@ export default function Home({
                   ""
                 )}
               </tr>
-            
-              <tr className={`${isChecked ? `` : `${hideonprint}` }`}>
+
+              <tr className={`${isChecked ? `` : `${hideonprint}`}`}>
                 <td>
-                  <input type="checkbox" className={`checkbox ${hideonprint}`} checked={isChecked}
-                   onChange={(e) =>setIsChecked(e.target.checked)}
-                />
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked}
+                    onChange={(e) => setIsChecked(e.target.checked)}
+                  />
                 </td>
                 <td>
                   <select
-                   className={`select ${hideonprint}`}
+                    className={`select ${hideonprint}`}
                     value={al_1plus2_90x100}
                     onChange={(e) => setAl_1plus2_90x100(e.target.value)}
                   >
@@ -718,13 +778,16 @@ export default function Home({
 
               <tr className={`${isChecked2 ? `` : `${hideonprint}`}`}>
                 <td>
-                  <input type="checkbox" className={`checkbox ${hideonprint}`} checked={isChecked2}
-                   onChange={(e) =>setIsChecked2(e.target.checked)}
-                />
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked2}
+                    onChange={(e) => setIsChecked2(e.target.checked)}
+                  />
                 </td>
                 <td>
                   <select
-                   className={`select ${hideonprint}`}
+                    className={`select ${hideonprint}`}
                     name="discountType"
                     value={al_1plus1_60x90}
                     onChange={(e) => setAl_1plus1_60x90(e.target.value)}
@@ -749,15 +812,18 @@ export default function Home({
                 {taiwanPacking ? <td> {allure60x90taiwan}</td> : ""}
                 {taiwanPhotoPacking ? <td> {allure60x90taiwanPhoto}</td> : ""}
               </tr>
-              <tr className={`${isChecked3 ? `` : `${hideonprint}`}`}>
+              <tr className={`${isChecked3 ? "" : `${hideonprint}`} ${stdSize ? "hidden" : ""}`}> 
                 <td>
-                  <input type="checkbox" className={`checkbox ${hideonprint}`} checked={isChecked3}
-                   onChange={(e) =>setIsChecked3(e.target.checked)}
-                />
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked3}
+                    onChange={(e) => setIsChecked3(e.target.checked)}
+                  />
                 </td>
                 <td>
                   <select
-                   className={`select ${hideonprint}`}
+                    className={`select ${hideonprint}`}
                     name="discountType"
                     value={al_1plus2_90x108}
                     onChange={(e) => setAl_1plus2_90x108(e.target.value)}
@@ -777,15 +843,18 @@ export default function Home({
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto}</td> : ""}
               </tr>
 
-              <tr className={`${isChecked4 ? `` : `${hideonprint}`}`}>
+              <tr className={`${isChecked4 ? `` : `${hideonprint}`} ${stdSize ? "hidden" : ""}`}>
                 <td>
-                  <input type="checkbox" className={`checkbox ${hideonprint}`} checked={isChecked4}
-                   onChange={(e) =>setIsChecked4(e.target.checked)}
-                />
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked4}
+                    onChange={(e) => setIsChecked4(e.target.checked)}
+                  />
                 </td>
                 <td>
                   <select
-                   className={`select ${hideonprint}`}
+                    className={`select ${hideonprint}`}
                     name="discountType"
                     value={al_1plus4_90x100}
                     onChange={(e) => setAl_1plus4_90x100(e.target.value)}
@@ -805,15 +874,18 @@ export default function Home({
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto}</td> : ""}
               </tr>
 
-              <tr className={`${isChecked5 ? `` : `${hideonprint}`}`}>
+              <tr className={`${isChecked5 ? `` : `${hideonprint}`} ${stdSize ? "hidden" : ""} `}>
                 <td>
-                  <input type="checkbox" className={`checkbox ${hideonprint}`} checked={isChecked5}
-                   onChange={(e) =>setIsChecked5(e.target.checked)}
-                />
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked5}
+                    onChange={(e) => setIsChecked5(e.target.checked)}
+                  />
                 </td>
                 <td>
                   <select
-                   className={`select ${hideonprint}`}
+                    className={`select ${hideonprint}`}
                     name="discountType"
                     value={al_1plus4_90x108}
                     onChange={(e) => setAl_1plus4_90x108(e.target.value)}
@@ -825,23 +897,30 @@ export default function Home({
                     <option value="plr">PLR</option>
                   </select>
                 </td>
-                <td >Allure(1+4)</td>
+                <td>Allure(1+4)</td>
                 <td>90 x 108</td>
                 {stdPacking ? <td>{allure90x108stdPacking_1plus4}</td> : ""}
                 {ldPacking ? <td> {allure90x108Ld_1plus4}</td> : ""}
                 {taiwanPacking ? <td>{allure90x108taiwan_1plus4}</td> : ""}
-                {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto_1plus4}</td> : ""}
+                {taiwanPhotoPacking ? (
+                  <td> {allure90x108taiwanPhoto_1plus4}</td>
+                ) : (
+                  ""
+                )}
               </tr>
 
               <tr className={`${isChecked6 ? `` : `${hideonprint}`}`}>
                 <td>
-                  <input type="checkbox" className={`checkbox ${hideonprint}`} checked={isChecked6}
-                   onChange={(e) =>setIsChecked6(e.target.checked)}
-                />
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked6}
+                    onChange={(e) => setIsChecked6(e.target.checked)}
+                  />
                 </td>
                 <td>
                   <select
-                   className={`select ${hideonprint}`}
+                    className={`select ${hideonprint}`}
                     name="discountType"
                     value={sanity_1plus2_90x100}
                     onChange={(e) => setSanity_1plus2_90x100(e.target.value)}
@@ -867,15 +946,18 @@ export default function Home({
                 {taiwanPhotoPacking ? <td> {satiny90x100taiwanPhoto}</td> : ""}
               </tr>
 
-               <tr className={`${isChecked7 ? `` : `${hideonprint}`}`}>
+              <tr className={`${isChecked7 ? `` : `${hideonprint}`}`}>
                 <td>
-                  <input type="checkbox" className={`checkbox ${hideonprint}`} checked={isChecked7}
-                   onChange={(e) =>setIsChecked7(e.target.checked)}
-                />
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked7}
+                    onChange={(e) => setIsChecked7(e.target.checked)}
+                  />
                 </td>
                 <td>
                   <select
-                   className={`select w-20 ${hideonprint}`}
+                    className={`select w-20 ${hideonprint}`}
                     name="discountType"
                     value={satiny_1plus1_60x90}
                     onChange={(e) => setSatiny_1plus1_60x90(e.target.value)}
@@ -901,24 +983,27 @@ export default function Home({
                 {taiwanPhotoPacking ? <td>{satiny60x90taiwanPhoto}</td> : ""}
               </tr>
 
-             <tr className={`${isChecked8 ? `` : `${hideonprint}`}`}>
+              <tr className={`${isChecked8 ? `` : `${hideonprint}`} ${stdSize ? "hidden" : ""}`}>
                 <td>
-                  <input type="checkbox" className={`checkbox ${hideonprint}`} checked={isChecked8}
-                   onChange={(e) =>setIsChecked8(e.target.checked)}
-                />
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked8}
+                    onChange={(e) => setIsChecked8(e.target.checked)}
+                  />
                 </td>
                 <td>
                   <select
-                   className={`select ${hideonprint}`}
+                    className={`select ${hideonprint}`}
                     name="discountType"
                     value={satiny_1plus2_90x108}
                     onChange={(e) => setSatiny_1plus2_90x108(e.target.value)}
                   >
-                    <option value="c2c">C2C</option> 
-                    <option value="glr">GLR</option> 
-                    <option value="blr">BLR</option> 
-                    <option value="slr">SLR</option> 
-                    <option value="plr">PLR</option> 
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
                   </select>
                 </td>
                 <td>Satiny(1+2)</td>

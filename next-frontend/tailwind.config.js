@@ -12,4 +12,6 @@ module.exports = {
     extend: {},
   },
 	plugins: [require("rippleui")],
+  darkMode: "media",
+
 }
