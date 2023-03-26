@@ -3,7 +3,6 @@ import { createClient } from "next-sanity";
 import { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
 
-
 export default function Home({
   priceData,
   ptype,
@@ -48,19 +47,22 @@ export default function Home({
   console.log(al_1plus2_90x100);
   const [hideonprint, setHideonprint] = useState();
 
-//standard size
-const [stdSize, setStdSize] = useState("");
+  //standard size
+  const [stdSize, setStdSize] = useState("");
 
-// party form name states
-const [inputValue, setInputValue] = useState("");
-const [partyName, setPartyName] = useState("");
+  // party form name states
+  const [inputValue, setInputValue] = useState("");
+  const [partyName, setPartyName] = useState("");
+  const [partyDetail1, setPartyDetail1] = useState("");
+  const [partyDetail2, setPartyDetail2] = useState("");
+  const [pdfDetail1, setPdfDetail1] = useState("");
+  const [pdfDetail2, setPdfDetail2] = useState("");
 
-const today = new Date().toLocaleDateString("en-GB", {
-  day: "numeric",
-  month: "numeric",
-  year: "numeric",
-});
-
+  const today = new Date().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+  });
 
   useEffect(() => {
     setStdPacking(true);
@@ -547,7 +549,6 @@ const today = new Date().toLocaleDateString("en-GB", {
                     className="select"
                     name="discountType"
                     value={discountType}
-                
                     onChange={(e) => {
                       const value = e.target.value;
                       setDiscountType(value);
@@ -619,21 +620,18 @@ const today = new Date().toLocaleDateString("en-GB", {
                       <span>Taiwan + Photo</span>
                     </label>
                   </div>
-                  <div>
-                  </div>
+                  <div></div>
                 </div>
-                  <label className="flex cursor-pointer gap-2">
-                      <input
-                        type="checkbox"
-                        name="packing"
-                        className="switch"
-                        checked={stdSize}
-                        onChange={(e) =>
-                          setStdSize(e.target.checked)
-                        }
-                      />
-                      <span className="font-bold">Standard Design</span>
-                  </label>
+                <label className="flex cursor-pointer gap-2">
+                  <input
+                    type="checkbox"
+                    name="packing"
+                    className="switch"
+                    checked={stdSize}
+                    onChange={(e) => setStdSize(e.target.checked)}
+                  />
+                  <span className="font-bold">Standard Design</span>
+                </label>
 
                 <div className="form-field pt-5">
                   <div className="form-control flex-col">
@@ -647,7 +645,15 @@ const today = new Date().toLocaleDateString("en-GB", {
                         width={25}
                         className="mr-4"
                       />
-                      {isDownloading ? "Downloading..." : "Download PDF"}
+                      {isDownloading ? (
+                        <div className="download-animation">
+                          <div className="line line-1"></div>
+                          <div className="line line-2"></div>
+                          <div className="line line-3"></div>
+                        </div>
+                      ) : (
+                        "Download PDF"
+                      )}
                     </button>
 
                     <button
@@ -666,22 +672,49 @@ const today = new Date().toLocaleDateString("en-GB", {
           <div>
             <div className="bg-white rounded-lg shadow p-6">
               <div className="mx-auto flex w-full max-w-sm flex-col gap-6">
-            
                 <div className="form-group">
                   <div className="form-field">
-                    <label className="form-label font-semibold">Party Name</label>
+                    <label className="form-label font-semibold">
+                      Party Name
+                    </label>
                     <input
-                      placeholder="Type here"
+                      placeholder="Enter Name"
                       type="text"
-                      value={inputValue}   onChange={(event) => setInputValue(event.target.value)}
-
+                      value={inputValue}
+                      onChange={(event) => setInputValue(event.target.value)}
                       className="input max-w-full"
+                    />
+
+                    {/* --------- More Party Details ------------- */}
+                    <label className="form-label font-semibold mt-4 text-gray-900">
+                      Other Details
+                    </label>
+                    <input
+                      placeholder="More Details"
+                      type="text"
+                      value={partyDetail1}
+                      onChange={(event) => setPartyDetail1(event.target.value)}
+                      className="input max-w-full "
+                    />
+                    <input
+                      placeholder="More Details"
+                      type="text"
+                      value={partyDetail2}
+                      onChange={(event) => setPartyDetail2(event.target.value)}
+                      className="input max-w-full mt-4"
                     />
                   </div>
                   <div className="form-field pt-2">
                     <div className="form-control justify-between">
-                      <button type="button" className="btn btn-primary w-full"
-                     onClick={() => setPartyName(inputValue)}>
+                      <button
+                        type="button"
+                        className="btn btn-primary w-full"
+                        onClick={() => {
+                          setPartyName(inputValue);
+                          setPdfDetail1(partyDetail1);
+                          setPdfDetail2(partyDetail2);
+                        }}
+                      >
                         Update
                       </button>
                     </div>
@@ -696,19 +729,24 @@ const today = new Date().toLocaleDateString("en-GB", {
       {/* table */}
       <div>
         <div className="table-wrapper" ref={outputRef}>
-        <div className="flex flex-row items-center ">
-        <div>
-        <img
-            src="./logo.png"
-            alt="logo"
-            width={150}
-            className="ml-16 mt-10"
-          />
-        </div>
-            <div className="ml-80"> 
-            {today}
-            <p><span className="font-bold">Party Name :</span> {partyName}</p></div>
-        </div>
+          <div className="flex flex-row items-center ">
+            <div>
+              <img
+                src="./logo.png"
+                alt="logo"
+                width={150}
+                className="ml-16 mt-10"
+              />
+            </div>
+            <div className="ml-80">
+              {today}
+              <p className="mt-3">
+                <span className="font-bold"> {partyName}</span>
+              </p>
+              <p>{pdfDetail1}</p>
+              <p>{pdfDetail2}</p>
+            </div>
+          </div>
           <table border="1" className="table card bg-white p-5 m-5">
             <tbody>
               <tr>
@@ -812,7 +850,11 @@ const today = new Date().toLocaleDateString("en-GB", {
                 {taiwanPacking ? <td> {allure60x90taiwan}</td> : ""}
                 {taiwanPhotoPacking ? <td> {allure60x90taiwanPhoto}</td> : ""}
               </tr>
-              <tr className={`${isChecked3 ? "" : `${hideonprint}`} ${stdSize ? "hidden" : ""}`}> 
+              <tr
+                className={`${isChecked3 ? "" : `${hideonprint}`} ${
+                  stdSize ? "hidden" : ""
+                }`}
+              >
                 <td>
                   <input
                     type="checkbox"
@@ -843,7 +885,11 @@ const today = new Date().toLocaleDateString("en-GB", {
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto}</td> : ""}
               </tr>
 
-              <tr className={`${isChecked4 ? `` : `${hideonprint}`} ${stdSize ? "hidden" : ""}`}>
+              <tr
+                className={`${isChecked4 ? `` : `${hideonprint}`} ${
+                  stdSize ? "hidden" : ""
+                }`}
+              >
                 <td>
                   <input
                     type="checkbox"
@@ -874,7 +920,11 @@ const today = new Date().toLocaleDateString("en-GB", {
                 {taiwanPhotoPacking ? <td> {allure90x108taiwanPhoto}</td> : ""}
               </tr>
 
-              <tr className={`${isChecked5 ? `` : `${hideonprint}`} ${stdSize ? "hidden" : ""} `}>
+              <tr
+                className={`${isChecked5 ? `` : `${hideonprint}`} ${
+                  stdSize ? "hidden" : ""
+                } `}
+              >
                 <td>
                   <input
                     type="checkbox"
@@ -983,7 +1033,11 @@ const today = new Date().toLocaleDateString("en-GB", {
                 {taiwanPhotoPacking ? <td>{satiny60x90taiwanPhoto}</td> : ""}
               </tr>
 
-              <tr className={`${isChecked8 ? `` : `${hideonprint}`} ${stdSize ? "hidden" : ""}`}>
+              <tr
+                className={`${isChecked8 ? `` : `${hideonprint}`} ${
+                  stdSize ? "hidden" : ""
+                }`}
+              >
                 <td>
                   <input
                     type="checkbox"

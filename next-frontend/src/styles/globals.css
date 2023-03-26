@@ -5,3 +5,42 @@
 .discount-form {
     width: 40%;
 }
+
+
+.download-animation {
+    position: absolute;
+    top: 25%;
+    left: 57%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .download-animation .line {
+    width: 2px;
+    height: 8px;
+    background-color: #ffffff;
+    animation: download-line 1s infinite;
+  }
+  .download-animation .line-1 {
+    animation-delay: 0s;
+  }
+  .download-animation .line-2 {
+    animation-delay: 0.2s;
+  }
+  .download-animation .line-3 {
+    animation-delay: 0.4s;
+  }
+  @keyframes download-line {
+    0% {
+      transform: scale(1, 0);
+    }
+    50% {
+      transform: scale(1, 1);
+    }
+    100% {
+      transform: scale(1, 0);
+    }
+  }
