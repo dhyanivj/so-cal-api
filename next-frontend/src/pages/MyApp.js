@@ -1,16 +1,7 @@
-import { Auth0Provider } from "@auth0/auth0-react";
-import { authConfig } from "../auth0-config";
+import { withAuth0 } from "@auth0/auth0-react";
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <Auth0Provider
-      domain={authConfig.domain}
-      clientId={authConfig.clientId}
-      redirectUri={typeof window !== "undefined" && window.location.origin}
-    >
-      <Component {...pageProps} />
-    </Auth0Provider>
-  );
+  return <Component {...pageProps} />;
 }
 
-export default MyApp;
+export default withAuth0(MyApp);

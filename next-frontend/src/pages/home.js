@@ -3,6 +3,7 @@ import { createClient } from "next-sanity";
 import { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
 import withAuth from "../../utils/withAuth";
+import Navbar from "@/components/Navbar";
 
 function Home({
   priceData,
@@ -532,7 +533,7 @@ function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Navbar />
       <div className="w-100 bg-blue-300">
         <div className="flex justify-center  gap-6 p-5">
           <div className="bg-white rounded-lg shadow p-5 px-14 discount-form ">
