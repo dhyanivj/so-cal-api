@@ -1,14 +1,16 @@
-import "@/styles/globals.css";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { authConfig } from "../auth0-config";
 
-export default function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
     <Auth0Provider
-      domain="sleepingowls.us.auth0.com"
-      clientId="XhW0cVDhZNTFZSk2FroEe0bm0RZix4zB"
+      domain={authConfig.domain}
+      clientId={authConfig.clientId}
       redirectUri={typeof window !== "undefined" && window.location.origin}
     >
       <Component {...pageProps} />
     </Auth0Provider>
   );
 }
+
+export default MyApp;

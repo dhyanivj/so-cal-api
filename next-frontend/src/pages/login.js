@@ -1,40 +1,25 @@
-import { useRouter } from 'next/router';
+import React from "react";
 
-function LoginPage() {
-  const router = useRouter();
+import Image from "next/image";
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // Check if the user's credentials match the dummy credentials
-    const username = event.target.username.value;
-    const password = event.target.password.value;
-
-    if (username === 'test' && password === 'test') {
-      // Set a cookie or session variable to indicate that the user is authenticated
-      document.cookie = 'authenticated=true';
-
-      // Redirect the user to the main page of the app
-      router.push('/');
-    } else {
-      // Show an error message if the user's credentials are incorrect
-      // ...
-    }
-  };
-
+const login = () => {
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input type="text" name="username" />
-      </label>
-      <label>
-        Password:
-        <input type="password" name="password" />
-      </label>
-      <button type="submit">Log in</button>
-    </form>
-  );
-}
+    <div>
+      <Image
+        src="/images/logo.png"
+        alt="Logo"
+        width={150}
+        height={100}
+        className="p-5 mx-auto"
+      />
 
-export default LoginPage;
+      <div className="bg-blue-500 h-screen rounded-t-3xl flex pt-10 justify-center">
+        <a href="/" className="btn btn-primary rounded-full px-10 ">
+          Login
+        </a>
+      </div>
+    </div>
+  );
+};
+
+export default login;
