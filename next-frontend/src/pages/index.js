@@ -5,11 +5,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Index = () => {
   const router = useRouter();
-
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+  // const { username } = user;
+
   if (isAuthenticated) {
     router.push("/home");
   }
+
+  // console.log(user.name);
   return (
     <div>
       <Image
@@ -19,9 +22,9 @@ const Index = () => {
         height={100}
         className="p-5 mx-auto"
       />
-
       <div className="bg-blue-500 h-screen rounded-t-3xl flex pt-10 justify-center">
         {/* ------------ */}
+
         <button
           className="btn btn-primary rounded-full px-10"
           onClick={() => loginWithRedirect()}
@@ -32,8 +35,12 @@ const Index = () => {
         {isAuthenticated && (
           <div>
             <p>{user.email}</p>
+            <p>{user.updated_at}</p>
+            <p>{user.last_login}</p>
+            <p>{user.name} </p>
           </div>
         )}
+
         <button
           onClick={() =>
             logout({ logoutParams: { returnTo: window.location.origin } })
