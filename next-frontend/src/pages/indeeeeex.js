@@ -7,11 +7,11 @@ import styles from "../styles/login.module.css";
 const Index = () => {
   const router = useRouter();
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+  // const { username } = user;
 
-  // login redirect to the rates page
-  if (isAuthenticated) {
-    router.push("/home");
-  }
+  // if (isAuthenticated) {
+  //   router.push("/home");
+  // }
 
   return (
     <div className={styles.login__wrapper}>
@@ -64,6 +64,7 @@ const Index = () => {
                 <p>{user.name} </p>
               </div>
             )}
+
             {/* END user info  */}
           </div>
           <div>

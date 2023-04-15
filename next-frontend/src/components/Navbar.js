@@ -14,6 +14,18 @@ const Navbar = () => {
         <a class="navbar-item">About</a> */}
 
         {isAuthenticated && (
+          <div className="bg-red-500">
+            <p className="font-bold">Test User Data :</p>
+            <p>{user.email}</p>
+            <p>{user.updated_at}</p>
+            <p>{user.last_login}</p>
+            <p>{user.name} </p>
+            <p>NickName : {user.nickname} </p>
+            {/* <p>metadata : {user.user_metadata["gst"]} </p> */}
+          </div>
+        )}
+
+        {isAuthenticated && (
           <div className="flex items-center">
             <p>{user.email}</p>
             <a class="navbar-item">
@@ -26,7 +38,6 @@ const Navbar = () => {
                 Log Out
               </button>
             </a>
-           
           </div>
         )}
       </div>
