@@ -2,6 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useAuth0 } from "@auth0/auth0-react";
+import styles from "../styles/login.module.css";
 
 const Index = () => {
   const router = useRouter();
@@ -12,42 +13,62 @@ const Index = () => {
     router.push("/home");
   }
 
-  // console.log(user.name);
   return (
-    <div>
-      <Image
-        src="/images/logo.png"
-        alt="Logo"
-        width={150}
-        height={100}
-        className="p-5 mx-auto"
-      />
-      <div className="bg-blue-500 h-screen rounded-t-3xl flex pt-10 justify-center">
-        {/* ------------ */}
+    <div className={styles.login__wrapper}>
+      <div className={styles.bg__lines}>
+        <div className="flex items-center justify-between mx-5">
+          <img src="./images/logo-white.png" alt="logo" width={300} />
+          <div className="flex gap-5 items-center">
+            <span className="text-white">Home</span>
+            <span className="text-white">lorem</span>
 
-        <button
-          className="btn btn-primary rounded-full px-10"
-          onClick={() => loginWithRedirect()}
-        >
-          Login
-        </button>
+            {isAuthenticated && (
+              <button
+                onClick={() =>
+                  logout({ logoutParams: { returnTo: window.location.origin } })
+                }
+              >
+                Log Out
+              </button>
+            )}
 
-        {isAuthenticated && (
-          <div>
-            <p>{user.email}</p>
-            <p>{user.updated_at}</p>
-            <p>{user.last_login}</p>
-            <p>{user.name} </p>
+            <button className="btn bg-yellow-500 rounded">Contact us</button>
           </div>
-        )}
+        </div>
+        {/* header ends here  */}
+        <div className="flex mx-10 items-center mt-10">
+          <div className="mr-10">
+            <p className={styles.playfairfont}>
+              Sweet dreams start with a comfortable bed and soft bedding.
+            </p>
+            <p className="text-white my-7">
+              Soft, high-quality bedsheets are essential for a good night's
+              sleep. Invest in bedding that balances softness, durability, and
+              value. Upgrade your sleep experience today with Sleeping Owls.
+            </p>
+            <button
+              className="btn bg-yellow-500 rounded font-bold px-10"
+              onClick={() => loginWithRedirect()}
+            >
+              Login
+            </button>
 
-        <button
-          onClick={() =>
-            logout({ logoutParams: { returnTo: window.location.origin } })
-          }
-        >
-          Log Out
-        </button>
+            {/* user info */}
+            {isAuthenticated && (
+              <div>
+                <p>{user.email}</p>
+                <p>{user.updated_at}</p>
+                <p>{user.last_login}</p>
+                <p>{user.name} </p>
+              </div>
+            )}
+
+            {/* END user info  */}
+          </div>
+          <div>
+            <img src="./images/sleeping-illus.svg" alt="sleep" />
+          </div>
+        </div>
       </div>
     </div>
   );
