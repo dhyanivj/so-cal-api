@@ -1065,6 +1065,42 @@ function Home({
                 {taiwanPacking ? <td> {satiny90x108taiwan}</td> : ""}
                 {taiwanPhotoPacking ? <td> {satiny90x108taiwanPhoto}</td> : ""}
               </tr>
+              {/* copid row  */}
+              <tr
+                className={`${isChecked8 ? `` : `${hideonprint}`} ${
+                  stdSize ? "hidden" : ""
+                }`}
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked8}
+                    onChange={(e) => setIsChecked8(e.target.checked)}
+                  />
+                </td>
+                <td>
+                  <select
+                    className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={satiny_1plus2_90x108}
+                    onChange={(e) => setSatiny_1plus2_90x108(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
+                </td>
+                <td>Solid Luxury 600TC</td>
+                <td>108 x 108</td>
+                {stdPacking ? <td>{satiny90x108stdPacking}</td> : ""}
+                {ldPacking ? <td> {satiny90x108Ld}</td> : ""}
+                {taiwanPacking ? <td> {satiny90x108taiwan}</td> : ""}
+                {taiwanPhotoPacking ? <td> {satiny90x108taiwanPhoto}</td> : ""}
+              </tr>
+              {/* end copied row  */}
             </tbody>
           </table>
         </div>
