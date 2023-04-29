@@ -33,6 +33,10 @@ function Home({
   const [isChecked6, setIsChecked6] = useState(true);
   const [isChecked7, setIsChecked7] = useState(true);
   const [isChecked8, setIsChecked8] = useState(true);
+  const [isChecked9, setIsChecked9] = useState(true);
+  const [isChecked10, setIsChecked10] = useState(true);
+  const [isChecked11, setIsChecked11] = useState(true);
+  const [isChecked12, setIsChecked12] = useState(true);
 
   //table discount type
   const [al_1plus2_90x100, setAl_1plus2_90x100] = useState(discountType);
@@ -45,6 +49,10 @@ function Home({
   const [satiny_1plus1_60x90, setSatiny_1plus1_60x90] = useState(discountType);
   const [satiny_1plus2_90x108, setSatiny_1plus2_90x108] =
     useState(discountType);
+  const [gandeur_90x108, setGandeur_90x108] = useState(discountType);
+  const [gandeur_108x108, setGandeur_108x108] = useState(discountType);
+  const [satiny_108x108, setSatiny_108x108] = useState(discountType);
+  const [vbc_108x108, setVbc_108x108] = useState(discountType);
 
   console.log(al_1plus2_90x100);
   const [hideonprint, setHideonprint] = useState();
@@ -192,7 +200,7 @@ function Home({
     }
   };
 
-  // console.log(standardPack);
+  console.log(priceData);
 
   const allure90x100Ld = Math.round(
     (((bedsheetSize[0].size90100 + stitchingCost[0].pillowMeterCost * 2) *
@@ -525,6 +533,200 @@ function Home({
       costType[0][satiny_1plus1_60x90]
   );
 
+  const wastageFabricCutting = 3;
+  const bedsheetSize90 = (90 + 1 + wastageFabricCutting) / 39.4;
+  const bedsheetSize108 = (108 + 1 + wastageFabricCutting) / 39.4;
+
+  //grandeur price
+  const grandeur90x108stdPacking = Math.round(
+    (((bedsheetSize90 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].GrandeurFabric90Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      (standardPack[0].insert +
+        standardPack[0].photo +
+        standardPack[0].pvcBox +
+        standardPack[0].stiffner) *
+        (1 + standardPack[0].wastePercentage / 100)) *
+      commoncost[0].overhead) /
+      costType[0][gandeur_90x108]
+  );
+
+  const grandeur90x108Ld = Math.round(
+    (((bedsheetSize90 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].GrandeurFabric90Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].ld) *
+      commoncost[0].overhead) /
+      costType[0][gandeur_90x108]
+  );
+
+  const grandeur90x108taiwan = Math.round(
+    (((bedsheetSize90 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].GrandeurFabric90Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].taiwan) *
+      commoncost[0].overhead) /
+      costType[0][gandeur_90x108]
+  );
+
+  const grandeur90x108taiwanPhoto = Math.round(
+    (((bedsheetSize90 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].GrandeurFabric90Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].taiwanPhoto) *
+      commoncost[0].overhead) /
+      costType[0][gandeur_90x108]
+  );
+
+  //END grandeur 90 price
+
+  //grandeur 108 price
+  const grandeur108x108stdPacking = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].GrandeurFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      (standardPack[0].insert +
+        standardPack[0].photo +
+        standardPack[0].pvcBox +
+        standardPack[0].stiffner) *
+        (1 + standardPack[0].wastePercentage / 100)) *
+      commoncost[0].overhead) /
+      costType[0][gandeur_108x108]
+  );
+
+  const grandeur108x108Ld = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].GrandeurFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].ld) *
+      commoncost[0].overhead) /
+      costType[0][gandeur_108x108]
+  );
+
+  const grandeur108x108taiwan = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].GrandeurFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].taiwan) *
+      commoncost[0].overhead) /
+      costType[0][gandeur_108x108]
+  );
+
+  const grandeur108x108taiwanPhoto = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].GrandeurFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].taiwanPhoto) *
+      commoncost[0].overhead) /
+      costType[0][gandeur_108x108]
+  );
+
+  //END grandeur 108' price
+
+  //Satiny 108 price
+  const satiny108x108stdPacking = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].SatinyFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      (standardPack[0].insert +
+        standardPack[0].photo +
+        standardPack[0].pvcBox +
+        standardPack[0].stiffner) *
+        (1 + standardPack[0].wastePercentage / 100)) *
+      commoncost[0].overhead) /
+      costType[0][satiny_108x108]
+  );
+
+  const satiny108x108Ld = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].SatinyFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].ld) *
+      commoncost[0].overhead) /
+      costType[0][satiny_108x108]
+  );
+
+  const satiny108x108taiwan = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].SatinyFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].taiwan) *
+      commoncost[0].overhead) /
+      costType[0][satiny_108x108]
+  );
+
+  const satiny108x108taiwanPhoto = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].SatinyFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].taiwanPhoto) *
+      commoncost[0].overhead) /
+      costType[0][satiny_108x108]
+  );
+
+  //END Satiny 108' price
+
+  //VBC 108 price
+  const vbc108x108stdPacking = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].VBCFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      (standardPack[0].insert +
+        standardPack[0].photo +
+        standardPack[0].pvcBox +
+        standardPack[0].stiffner) *
+        (1 + standardPack[0].wastePercentage / 100)) *
+      commoncost[0].overhead) /
+      costType[0][vbc_108x108]
+  );
+
+  const vbc108x108Ld = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].VBCFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].ld) *
+      commoncost[0].overhead) /
+      costType[0][vbc_108x108]
+  );
+
+  const vbc108x108taiwan = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].VBCFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].taiwan) *
+      commoncost[0].overhead) /
+      costType[0][vbc_108x108]
+  );
+
+  const vbc108x108taiwanPhoto = Math.round(
+    (((bedsheetSize108 + stitchingCost[0].pillowMeterCost * 2) *
+      (fabricPrice[0].VBCFabric108Price + commoncost[0].transportcost) +
+      (stitchingCost[0].besheetStichingCost +
+        stitchingCost[0].pillowStitchingCost * 2) +
+      ptype[0].taiwanPhoto) *
+      commoncost[0].overhead) /
+      costType[0][vbc_108x108]
+  );
+
+  //END VBC 108' price
+
+  //END princing formula
+
   return (
     <>
       <Head>
@@ -558,6 +760,10 @@ function Home({
                       setSanity_1plus2_90x100(value);
                       setSatiny_1plus1_60x90(value);
                       setSatiny_1plus2_90x108(value);
+                      setGandeur_90x108(value);
+                      setGandeur_108x108(value);
+                      setSatiny_108x108(value);
+                      setVbc_108x108(value);
                     }}
                   >
                     <option value="c2c">C2C</option>
@@ -1065,9 +1271,9 @@ function Home({
                 {taiwanPacking ? <td> {satiny90x108taiwan}</td> : ""}
                 {taiwanPhotoPacking ? <td> {satiny90x108taiwanPhoto}</td> : ""}
               </tr>
-              {/* copid row  */}
+              {/* Grandeur 90'  */}
               <tr
-                className={`${isChecked8 ? `` : `${hideonprint}`} ${
+                className={`${isChecked9 ? `` : `${hideonprint}`} ${
                   stdSize ? "hidden" : ""
                 }`}
               >
@@ -1075,16 +1281,16 @@ function Home({
                   <input
                     type="checkbox"
                     className={`checkbox ${hideonprint}`}
-                    checked={isChecked8}
-                    onChange={(e) => setIsChecked8(e.target.checked)}
+                    checked={isChecked9}
+                    onChange={(e) => setIsChecked9(e.target.checked)}
                   />
                 </td>
                 <td>
                   <select
                     className={`select ${hideonprint}`}
                     name="discountType"
-                    value={satiny_1plus2_90x108}
-                    onChange={(e) => setSatiny_1plus2_90x108(e.target.value)}
+                    value={gandeur_90x108}
+                    onChange={(e) => setGandeur_90x108(e.target.value)}
                   >
                     <option value="c2c">C2C</option>
                     <option value="glr">GLR</option>
@@ -1093,14 +1299,169 @@ function Home({
                     <option value="plr">PLR</option>
                   </select>
                 </td>
-                <td>Solid Luxury 600TC</td>
-                <td>108 x 108</td>
-                {stdPacking ? <td>{satiny90x108stdPacking}</td> : ""}
-                {ldPacking ? <td> {satiny90x108Ld}</td> : ""}
-                {taiwanPacking ? <td> {satiny90x108taiwan}</td> : ""}
-                {taiwanPhotoPacking ? <td> {satiny90x108taiwanPhoto}</td> : ""}
+                <td>Grandeur 90" </td>
+                <td>90 x 108</td>
+                {stdPacking ? <td>{grandeur90x108stdPacking}</td> : ""}
+                {ldPacking ? <td> {grandeur90x108Ld}</td> : ""}
+                {taiwanPacking ? <td> {grandeur90x108taiwan}</td> : ""}
+                {taiwanPhotoPacking ? (
+                  <td> {grandeur90x108taiwanPhoto}</td>
+                ) : (
+                  ""
+                )}
               </tr>
-              {/* end copied row  */}
+              {/* END  Grandeur 90'  */}
+              {/* Grandeur 108'  */}
+              <tr
+                className={`${isChecked10 ? `` : `${hideonprint}`} ${
+                  stdSize ? "hidden" : ""
+                }`}
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked10}
+                    onChange={(e) => setIsChecked10(e.target.checked)}
+                  />
+                </td>
+                <td>
+                  <select
+                    className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={gandeur_108x108}
+                    onChange={(e) => setGandeur_108x108(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
+                </td>
+                <td>Grandeur 108" </td>
+                <td>108 x 108</td>
+                {stdPacking ? <td>{grandeur108x108stdPacking}</td> : ""}
+                {ldPacking ? <td> {grandeur108x108Ld}</td> : ""}
+                {taiwanPacking ? <td> {grandeur108x108taiwan}</td> : ""}
+                {taiwanPhotoPacking ? (
+                  <td> {grandeur108x108taiwanPhoto}</td>
+                ) : (
+                  ""
+                )}
+              </tr>
+              {/* END  Grandeur 108'  */}
+
+              {/* Satiny 108'  */}
+              <tr
+                className={`${isChecked11 ? `` : `${hideonprint}`} ${
+                  stdSize ? "hidden" : ""
+                }`}
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked11}
+                    onChange={(e) => setIsChecked11(e.target.checked)}
+                  />
+                </td>
+                <td>
+                  <select
+                    className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={satiny_108x108}
+                    onChange={(e) => setSatiny_108x108(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
+                </td>
+                <td>Satiny 108" </td>
+                <td>108 x 108</td>
+                {stdPacking ? <td>{satiny108x108stdPacking}</td> : ""}
+                {ldPacking ? <td> {satiny108x108Ld}</td> : ""}
+                {taiwanPacking ? <td> {satiny108x108taiwan}</td> : ""}
+                {taiwanPhotoPacking ? <td> {satiny108x108taiwanPhoto}</td> : ""}
+              </tr>
+              {/* END  Satiny 108'  */}
+
+              {/* VBC 108'  */}
+              <tr
+                className={`${isChecked12 ? `` : `${hideonprint}`} ${
+                  stdSize ? "hidden" : ""
+                }`}
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked12}
+                    onChange={(e) => setIsChecked12(e.target.checked)}
+                  />
+                </td>
+                <td>
+                  <select
+                    className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={vbc_108x108}
+                    onChange={(e) => setVbc_108x108(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
+                </td>
+                <td>VBC 108" </td>
+                <td>108 x 108</td>
+                {stdPacking ? <td>{vbc108x108stdPacking}</td> : ""}
+                {ldPacking ? <td> {vbc108x108Ld}</td> : ""}
+                {taiwanPacking ? <td> {vbc108x108taiwan}</td> : ""}
+                {taiwanPhotoPacking ? <td> {vbc108x108taiwanPhoto}</td> : ""}
+              </tr>
+              {/* END  VBC 108'  */}
+
+              {/* Colors 210 (White)  */}
+              <tr
+                className={`${isChecked12 ? `` : `${hideonprint}`} ${
+                  stdSize ? "hidden" : ""
+                }`}
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    className={`checkbox ${hideonprint}`}
+                    checked={isChecked12}
+                    onChange={(e) => setIsChecked12(e.target.checked)}
+                  />
+                </td>
+                <td>
+                  <select
+                    className={`select ${hideonprint}`}
+                    name="discountType"
+                    value={vbc_108x108}
+                    onChange={(e) => setVbc_108x108(e.target.value)}
+                  >
+                    <option value="c2c">C2C</option>
+                    <option value="glr">GLR</option>
+                    <option value="blr">BLR</option>
+                    <option value="slr">SLR</option>
+                    <option value="plr">PLR</option>
+                  </select>
+                </td>
+                <td>VBC 108" </td>
+                <td>108 x 108</td>
+                {stdPacking ? <td>{vbc108x108stdPacking}</td> : ""}
+                {ldPacking ? <td> {vbc108x108Ld}</td> : ""}
+                {taiwanPacking ? <td> {vbc108x108taiwan}</td> : ""}
+                {taiwanPhotoPacking ? <td> {vbc108x108taiwanPhoto}</td> : ""}
+              </tr>
+              {/* END  Colors 210 (White)  */}
             </tbody>
           </table>
         </div>
