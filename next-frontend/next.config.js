@@ -16,16 +16,16 @@
 //   },
 // });
 
-// github 
-const withPWA = require('next-pwa')({
-  dest: 'public'
-})
+// github
+// const withPWA = require('next-pwa')({
+//   dest: 'public'
+// })
 
-module.exports = withPWA({
-  pwa: {
-    dest: "public",
-    register: true,
-    // disable: process.env.NODE_ENV === "development",
-    skipWaiting: true,
-  },
-})
+// module.exports = withPWA({
+//   pwa: {
+//     dest: "public",
+//     register: true,
+//     // disable: process.env.NODE_ENV === "development",
+//     skipWaiting: true,
+//   },
+// })

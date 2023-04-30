@@ -21,7 +21,7 @@ const Navbar = () => {
             <p>{user.last_login}</p>
             <p>{user.name} </p>
             <p>NickName : {user.nickname} </p>
-            {/* <p>metadata : {user.user_metadata["gst"]} </p> */}
+            {/* <p>metadata : {user.user_metadata.gst} </p> */}
           </div>
         )}
 
