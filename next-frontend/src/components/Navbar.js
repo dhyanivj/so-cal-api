@@ -21,7 +21,9 @@ const Navbar = () => {
             <p>{user.last_login}</p>
             <p>{user.name} </p>
             <p>NickName : {user.nickname} </p>
-            {/* <p>metadata : {user.user_metadata.gst} </p> */}
+            {/* <p>metadata : {user.identities.user_id} </p> */}
+
+            {/* https://sleepingowls.us.auth0.com/api/v2/users/64312adbd49e0116b496ab49 */}
           </div>
         )}
 

@@ -1,0 +1,34 @@
+ const wastageFabricCutting = 3;
+ 
+ const cost = {
+  "CapitalInterstOH": 0.99,
+  "FourWayBedsheetStiching": 16,
+  "IndirectFactoryOH": 0.99,
+  "IndirectSalesOH": 0.99,
+  "OverlockPillowSC": 35,
+  "PipingPillowSC": 25,
+  "StichingMarginInches": 1,
+  "ThreeWayBedsheetStiching": 14,
+  "TwoWayBedsheetStiching": 12,
+  "WastageOfFabric": 0.97,
+  "ZigZagSC": 15,
+  "_createdAt": "2023-02-18T06:07:16Z",
+  "_id": "c95af8cf-81d5-484d-a89f-502d25499ebe",
+  "_rev": "pZKA4GL83JAoORHygmx6nE",
+  "_type": "commoncost",
+  "_updatedAt": "2023-04-30T11:50:52Z",
+  "overhead": 1.075,
+  "pfi108": 13.68,
+  "pfi90": 16.15,
+  "transportcost": 3
+}
+ 
+const BedsheetFabricCosting = ((((90 + cost.StichingMarginInches) / 2) + cost.WastageOfFabric) / 39.4) * 152 + cost.transportcost;
+//182
+
+const PillowFabricCosting = ((cost.pfi108 + cost.WastageOfFabric) / 39.4) * 152 + cost.transportcost;
+//59.51
+ 
+ const bedsheetSize54 = (54 + 1 + wastageFabricCutting) / 39.4;
+
+console.log(PillowFabricCosting);
